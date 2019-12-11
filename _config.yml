@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: https://leyao-daily.github.io/
+url: "https://leyao-daily.github.io"
 date_format: "ordinal"
 title: 悦己
 subtitle: "积累 成长"
