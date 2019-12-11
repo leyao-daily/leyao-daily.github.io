@@ -5,9 +5,25 @@
     <description></description>
     <link>http://0.0.0.0:4001/</link>
     <atom:link href="http://0.0.0.0:4001/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Dec 2019 00:38:51 -0500</pubDate>
-    <lastBuildDate>Wed, 11 Dec 2019 00:38:51 -0500</lastBuildDate>
+    <pubDate>Wed, 11 Dec 2019 00:42:42 -0500</pubDate>
+    <lastBuildDate>Wed, 11 Dec 2019 00:42:42 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Jekyll 搭建静态博客</title>
+        <description></description>
+        <pubDate>Tue, 10 Dec 2019 08:39:54 -0500</pubDate>
+        <link>http://0.0.0.0:4001/2019/12/10/create-my-blog-with-jekyll/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4001/2019/12/10/create-my-blog-with-jekyll/</guid>
+        
+        <category>jekyll</category>
+        
+        <category>RubyGems</category>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
     
   </channel>
 </rss>

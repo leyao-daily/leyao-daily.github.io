@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Jekyll 搭建静态博客"
-date:   2019-12-11 13:39:54
+date:   2019-12-10 13:39:54
 categories: jekyll
 tags: jekyll RubyGems
 ---
@@ -126,28 +126,6 @@ gem ins hitimes -v 1.2.1 --platform ruby
 > 然后将自动重新编译 hitimes 并适用于 Ruby 2.2
 
 下面是我自己的卸载和安装过程：
-
-```
-E:\GitWorkSpace\gaohaoyang.github.io>gem uni hitimes
-
-You have requested to uninstall the gem:
-        hitimes-1.2.2-x86-mingw32
-
-timers-4.0.1 depends on hitimes (>= 0)
-If you remove this gem, these dependencies will not be met.
-Continue with Uninstall? [yN]  y
-Successfully uninstalled hitimes-1.2.2-x86-mingw32
-
-E:\GitWorkSpace\gaohaoyang.github.io>gem ins hitimes -v 1.2.1 --platform ruby
-Fetching: hitimes-1.2.1.gem (100%)
-Temporarily enhancing PATH to include DevKit...
-Building native extensions.  This could take a while...
-Successfully installed hitimes-1.2.1
-Parsing documentation for hitimes-1.2.1
-Installing ri documentation for hitimes-1.2.1
-Done installing documentation for hitimes after 1 seconds
-1 gem installed
-```
 
 
 关于，[hitimes](https://rubygems.org/gems/hitimes/versions/1.2.2) 是一个快速的高效的定时器解决方案库，详情可以去官网查看。
