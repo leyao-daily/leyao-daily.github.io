@@ -1,19 +1,22 @@
-- name: Software Engineer Keywords
+- name: Language Keywords
   keywords:
       - Java
       - C++
       - Python
-      - Design Patterns
+      - Rust
+      - MySQL
 
-- name: Mobile Developer Keywords
+- name: Cloud Open Source Keywords
   keywords:
-      - Android
-      - Reverse Engineering
+      - Kubernetes
+      - Virtlet
+      - Kubevirt
+      - Akraion ICN
+      - StarlingX
+      - OpenStack
+      - Kube-OVN
 
-- name: Windows Developer Keywords
+- name: Network Keywords
   keywords:
-      - Win32 SDK
-      - DuiLib
-      - WTL
-      - COM
-      - WinDbg
+      - Iptables
+      - Neutron
