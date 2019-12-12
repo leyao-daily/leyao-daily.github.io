@@ -4,6 +4,7 @@
       - C++
       - Python
       - Rust
+      - Go
       - MySQL
 
 - name: Cloud Open Source Keywords
@@ -20,3 +21,5 @@
   keywords:
       - Iptables
       - Neutron
+      - SR-IOV
+      
