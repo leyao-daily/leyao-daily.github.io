@@ -8,8 +8,6 @@ keywords: Markdown, VSCode
 
 # ![Markdown Intro](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/title.png)
 
-自从 2014 年左右接触到 Markdown 以来，对它的使用就一发而不可收拾。从最开始使用它在 GitHub Pages 里写博客，到用它编辑项目的 README 文件，再到撰写开发文档，编辑微信公众号文章和邮件内容等等，这期间也见证了它在各类平台和网站上的普及和被原生支持，可以说，Markdown 如今已经渗透了我在技术和网络活动的方方面面，成为了我撰写文本文档的首选。
-
 那么首先我们一起来看一下它的「定义」：
 
 > Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科
@@ -77,7 +75,7 @@ keywords: Markdown, VSCode
 
     V2EX、光谷社区
 
-个人感觉比较遗憾的一点是各平台可能采用不同语言实现的 Markdown 解析引擎，或采用同一解析引擎的不同版本，而且可能有不同程度的定制与扩展，这导致在不同平台上使用 Markdown 写作时体验并不完全一致。不过幸好对于大家公认的一些标准语法，各家都是支持的。
+各平台可能采用不同语言实现的 Markdown 解析引擎，或采用同一解析引擎的不同版本，而且可能有不同程度的定制与扩展，这导致在不同平台上使用 Markdown 写作时体验并不完全一致。不过幸好对于大家公认的一些标准语法，各家都是支持的。
 
 ### 编辑工具
 
@@ -321,7 +319,7 @@ Markdown 支持行内式链接和引用式链接。
 
 **预览效果：**
 
-![Alt text](https://leyao-daily.github.io/favicon.ico "favicon")
+![Alt text](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico "favicon")
 
 **对应 HTML：**
 
