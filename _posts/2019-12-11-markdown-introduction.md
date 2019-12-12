@@ -6,7 +6,7 @@ description: 一份简明的 Markdown 笔记与教程
 keywords: Markdown, VSCode
 ---
 
-# ![Markdown Intro](./assets/title.png)
+# ![Markdown Intro](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/title.png)
 
 自从 2014 年左右接触到 Markdown 以来，对它的使用就一发而不可收拾。从最开始使用它在 GitHub Pages 里写博客，到用它编辑项目的 README 文件，再到撰写开发文档，编辑微信公众号文章和邮件内容等等，这期间也见证了它在各类平台和网站上的普及和被原生支持，可以说，Markdown 如今已经渗透了我在技术和网络活动的方方面面，成为了我撰写文本文档的首选。
 
@@ -18,7 +18,7 @@ keywords: Markdown, VSCode
 
 接下来请随我一起深入了解这门并不神秘的实用标记语言。
 
-# ![Table of Contents](./assets/toc.png)
+# ![Table of Contents](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/toc.png)
 
 <!-- vim-markdown-toc GFM -->
 
@@ -316,7 +316,7 @@ Markdown 支持行内式链接和引用式链接。
 **Markdown：**
 
 ```
-![Alt text](https://leyao-daily.github.io/favicon.ico "favicon")
+![Alt text](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico "favicon")
 ```
 
 **预览效果：**
@@ -326,7 +326,7 @@ Markdown 支持行内式链接和引用式链接。
 **对应 HTML：**
 
 ```html
-<img src="https://leyao-daily.github.io/favicon.ico" alt="Alt text" title="favicon">
+<img src="https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico" alt="Alt text" title="favicon">
 ```
 
 ### 列表
@@ -527,11 +527,11 @@ Markdown 标记语言的目的不是替代 HTML，也不是发明一种更便捷
 
 如果是在 GitHub / GitLab 的 Issue 里，会附赠任务完成比例提示效果：
 
-![task list 1](./assets/task-list-1.png)
+![task list 1](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/task-list-1.png)
 
 还可以直接在网页上拖动调整顺序，勾选和取消勾选。
 
-![task list 2](./assets/task-list-2.png)
+![task list 2](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/task-list-2.png)
 
 ### 删除线
 
@@ -611,15 +611,15 @@ https://github.com
 
 以我们使用的项目管理工具 TAPD 的在线编辑器为例：
 
-![流程图](./assets/tapd-markdown-flowchart.png)
+![流程图](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-flowchart.png)
 
-![时序图](./assets/tapd-markdown-seq.png)
+![时序图](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-seq.png)
 
 ### 插入数学公式
 
 仍然以 TAPD 为例：
 
-![数学公式](./assets/tapd-markdown-math.png)
+![数学公式](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-math.png)
 
 应该是利用 JavaScript 支持了 LaTeX 公式语法。
 
