@@ -314,7 +314,7 @@ Markdown 支持行内式链接和引用式链接。
 **Markdown：**
 
 ```
-![Alt text](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico "favicon")
+![Alt text](https://leyao-daily.github.io//favicon.ico "favicon")
 ```
 
 **预览效果：**
