@@ -68,7 +68,7 @@ keywords: sriov, qat, openssl, pf/vf, crypto
 > cd QAT && tar zxvf qat1.7.l.4.8.0-00005.tar.gz  
 
 配置QAT并编译安装，对于QAT VF来说，驱动安装需要配置guest sriov mode
-> ./configure -&zwnj;-enable-icp-sriov=guest  
+> ./configure \-\-enable-icp-sriov=guest  
 > make  
 > make install  
 
@@ -89,30 +89,30 @@ keywords: sriov, qat, openssl, pf/vf, crypto
 ### Openssl安装
 下载安装包并解压
 > cd  
-> wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz --no-check-certificate  
+> wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz \-\-no-check-certificate  
 > tar zxvf OpenSSL_1_1_1a.tar.gz  
 > cd openssl-OpenSSL_1_1_1a  
 
 配置并安装Openssl
-> ./config -&zwnj;-prefix=/usr/local/ssl  
+> ./config \-\-prefix=/usr/local/ssl  
 > make depend  
 > make  
 > make install  
 
 配置Openssl Engine环境
-> echo export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1 >> /root/.bashrc  
+> echo export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1 \>\> /root/.bashrc  
 > export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1
 
 ### QAT Engine安装 
 下载安装包并解压
 > cd  
-> wget https://github.com/intel/QAT_Engine/archive/v0.5.43.tar.gz --no-check-certificate  
+> wget https://github.com/intel/QAT_Engine/archive/v0.5.43.tar.gz \-\-no-check-certificate  
 > tar zxvf v0.5.43.tar.gz  
 > cd QAT_Engine-0.5.43  
 
 配置并安装QAT Engine
 > ./autogen.sh  
-> ./configure -&zwnj;-with-qat_dir=/root/QAT -&zwnj;-with-openssl_install_dir=/usr/local/ssl  
+> ./configure \-\-with-qat_dir=/root/QAT \-\-with-openssl_install_dir=/usr/local/ssl  
 > make  
 > make install  
 
