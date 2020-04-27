@@ -9,8 +9,8 @@ strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv
 
 * [编译安装](#编译安装)
 * [场景搭建](#场景搭建)
-    * [Swanctl](#Swanctl)
     * [IPSec](#IPSec)
+    * [Swanctl](#Swanctl)
 * [调用测试](#调用测试)
     * [命令行调用](#命令行调用)
     * [系统调用](#系统调用)
