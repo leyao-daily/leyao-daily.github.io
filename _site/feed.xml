@@ -1,1 +1,1123 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2019-12-11T15:47:10+08:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">悦己</title><subtitle>姚乐的个人博客</subtitle><author><name>Le Yao</name></author></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-27T16:58:53+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Le’s Zone</title><subtitle>姚乐的个人博客</subtitle><author><name>Le Yao</name></author><entry><title type="html">Rust语言特性总结</title><link href="http://localhost:4000/2020/04/26/Rust-Features/" rel="alternate" type="text/html" title="Rust语言特性总结" /><published>2020-04-26T00:00:00+08:00</published><updated>2020-04-26T00:00:00+08:00</updated><id>http://localhost:4000/2020/04/26/Rust-Features</id><content type="html" xml:base="http://localhost:4000/2020/04/26/Rust-Features/">&lt;p&gt;本文对Rust语言特性进行了简单的介绍和总结。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#零开销的抽象&quot;&gt;零成本的抽象&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#调用测试&quot;&gt;调用测试&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#系统调用&quot;&gt;系统调用&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#问题&quot;&gt;问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;零成本抽象&quot;&gt;零成本抽象&lt;/h2&gt;
+&lt;p&gt;零成本抽象的定义来自C++，C++创始人Bjarne Stroustrup定义：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;零成本抽象定义：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;没有整体开销：零成本抽象不应该对不使用它的程序的性能表现产生负面影响。&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;</content><author><name>Le Yao</name></author><summary type="html">本文对Rust语言特性进行了简单的介绍和总结。</summary></entry><entry><title type="html">Openssl + QAT Engine 在VF上的安装和使用</title><link href="http://localhost:4000/2020/03/12/openssl-qat/" rel="alternate" type="text/html" title="Openssl + QAT Engine 在VF上的安装和使用" /><published>2020-03-12T00:00:00+08:00</published><updated>2020-03-12T00:00:00+08:00</updated><id>http://localhost:4000/2020/03/12/openssl-qat</id><content type="html" xml:base="http://localhost:4000/2020/03/12/openssl-qat/">&lt;p&gt;本文档的目的在于提供一个具体而有效的Openssl + QAT Engine的搭建指南，区别于传统的搭建环境，我是在基于libvirt启动的虚拟机中，对利用SRIOV技术而挂载进入VM的QAT VF进行驱动加载和配置，完成Openssl Crypto Library对QAT的有效利用。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#背景&quot;&gt;背景&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#搭建环境&quot;&gt;搭建环境&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#系统配置&quot;&gt;系统配置&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#安装使用&quot;&gt;安装使用&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#基本环境&quot;&gt;基本环境&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#QAT驱动安装&quot;&gt;QAT驱动安装&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#Openssl安装&quot;&gt;Openssl安装&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#QAT Engine安装&quot;&gt;QAT Engine安装&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#QAT VF配置&quot;&gt;QAT VF配置&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#调用测试&quot;&gt;调用测试&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#命令行调用&quot;&gt;命令行调用&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#系统调用&quot;&gt;系统调用&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#问题&quot;&gt;问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
+&lt;h3 id=&quot;搭建需求&quot;&gt;搭建需求&lt;/h3&gt;
+&lt;p&gt;使用QAT，要求主机或者Sever有QAT加速卡，本文档中搭建所用的服务器有三个QAT卡&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;root@ubuntu:~# lspci -d:37c8&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;0000:3d:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)&lt;br /&gt;
+0000:3f:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)&lt;br /&gt;
+0000:da:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;系统配置&quot;&gt;系统配置&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;cpu&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;CPU(s):              72&lt;br /&gt;
+Model name:          Intel(R) Xeon(R) Gold 6139 CPU @ 2.30GHz&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;memory&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;Mem:           251G&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;OS&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;Ubuntu-18.04-server&lt;br /&gt;
+Linux ubuntu 4.15.0-55-generic #60-Ubuntu SMP Tue Jul 2 18:22:20 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;注意：本文档接下来的步骤都是在Host中启动的libvirt虚拟机中进行的操作。&lt;/p&gt;
+
+&lt;h2 id=&quot;安装使用&quot;&gt;安装使用&lt;/h2&gt;
+&lt;h3 id=&quot;基本环境&quot;&gt;基本环境&lt;/h3&gt;
+&lt;p&gt;请在root权限下进行本文档的步骤&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;sudo -i&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;安装后续安装所需的库，挂载依赖驱动&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;apt update&lt;br /&gt;
+apt-get install -y gcc make libpci-dev g++ pkg-config libssl-dev autoconf libtool libnuma-dev&lt;br /&gt;
+modprobe uio&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;检查QAT VF被正确分配&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;lspci -d:37c9&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;00:04.0 Co-processor: Intel Corporation Device 37c9 (rev 04)&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;qat驱动安装&quot;&gt;QAT驱动安装&lt;/h3&gt;
+&lt;p&gt;从01.org下载对应机器中QAT卡的驱动 &lt;a href=&quot;https://01.org/intel-quickassist-technology&quot;&gt;指南和驱动&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;cd&lt;br /&gt;
+wget https://01.org/sites/default/files/downloads//qat1.7.l.4.8.0-00005.tar.gz&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;创建工作目录并解压驱动包&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;mkdir QAT&lt;br /&gt;
+mv qat1.7.l.4.8.0-00005.tar.gz ./QAT&lt;br /&gt;
+cd QAT &amp;amp;&amp;amp; tar zxvf qat1.7.l.4.8.0-00005.tar.gz&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;配置QAT并编译安装，对于QAT VF来说，驱动安装需要配置guest sriov mode&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;./configure --enable-icp-sriov=guest&lt;br /&gt;
+make&lt;br /&gt;
+make install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;（Optional）安装sample应用&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;make samples-install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;确认QAT驱动安装并加载&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;lsmod | grep qat&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;qat_c62xvf    16384  0&lt;/p&gt;
+
+    &lt;p&gt;intel_qat     196608  2 usdm_drv,qat_c62xvf&lt;/p&gt;
+
+    &lt;p&gt;uio           20480  1 intel_qat&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;p&gt;#还可以通过sample应用进行QAT测试&lt;br /&gt;
+cpa_sample_code&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;openssl安装&quot;&gt;Openssl安装&lt;/h3&gt;
+&lt;p&gt;下载安装包并解压&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;cd&lt;br /&gt;
+wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz --no-check-certificate&lt;br /&gt;
+tar zxvf OpenSSL_1_1_1a.tar.gz&lt;br /&gt;
+cd openssl-OpenSSL_1_1_1a&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;配置并安装Openssl&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;./config --prefix=/usr/local/ssl&lt;br /&gt;
+make depend&lt;br /&gt;
+make&lt;br /&gt;
+make install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;配置Openssl Engine环境&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;echo export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1 &amp;gt;&amp;gt; /root/.bashrc&lt;br /&gt;
+export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;qat-engine安装&quot;&gt;QAT Engine安装&lt;/h3&gt;
+&lt;p&gt;下载安装包并解压&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;cd&lt;br /&gt;
+wget https://github.com/intel/QAT_Engine/archive/v0.5.43.tar.gz --no-check-certificate&lt;br /&gt;
+tar zxvf v0.5.43.tar.gz&lt;br /&gt;
+cd QAT_Engine-0.5.43&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;配置并安装QAT Engine&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;./autogen.sh&lt;br /&gt;
+./configure --with-qat_dir=/root/QAT --with-openssl_install_dir=/usr/local/ssl&lt;br /&gt;
+make&lt;br /&gt;
+make install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;qat-vf配置&quot;&gt;QAT VF配置&lt;/h3&gt;
+&lt;p&gt;本文档所搭建环境中QAT使用C6xx系列驱动，而且是对VF的编译，于是编译完成后会在/etc下看到VF配置文件&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;ls /etc | grep c6xx&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;c6xxvf_dev0.conf&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这里要注意，因为要通过Openssl使用QAT Engine，所以对QAT的配置需要更改section name并重启qat_service&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;sed -i 's/\[SSL\]/\[SHIM\]/g' /etc/c6xxvf_dev0.conf&lt;br /&gt;
+service qat_service restart&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Openssl打印QAT引擎信息&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl engine -t -c -vvvv qat&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;(qat) Reference implementation of QAT crypto engine&lt;br /&gt;
+[RSA, DSA, DH, AES-128-CBC-HMAC-SHA1, AES-128-CBC-HMAC-SHA256, AES-256-CBC-HMAC-SHA1, AES-256-CBC-HMAC-SHA256, TLS1-PRF, HKDF]&lt;br /&gt;
+    [ available ]&lt;br /&gt;
+    …&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;调用测试&quot;&gt;调用测试&lt;/h2&gt;
+&lt;h3 id=&quot;命令行调用&quot;&gt;命令行调用&lt;/h3&gt;
+&lt;p&gt;Openssl通过命令行显示的调用QAT Engine来使用QAT卡十分简单，只需要在命令中加入-engine qat
+纯Openssl同步测速rsa2048&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl speed -elapsed rsa2048&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign/s&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify/s&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;rsa 2048 bits&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000612s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000018s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1633.5&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;57114.6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;使用QAT卡同步测速res2048&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl speed -engine qat -elapsed rsa2048&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign/s&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify/s&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;rsa 2048 bits&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000472s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000069s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2118.5&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;14549.3&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;纯Openssl异步测速rsa2048&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl speed -elapsed -async_jobs 36 rsa2048&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign/s&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify/s&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;rsa 2048 bits&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000614s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000018s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1627.6&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;56026.5&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;使用QAT卡异步测速res2048&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl speed -engine qat -elapsed -async_jobs 36 rsa2048&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign/s&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify/s&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;rsa 2048 bits&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000034s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000009s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;29235.7&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;109564.0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;其中rsa2048是测试的算法，还可以替换测试其他如ecdhp256、ecdsap256等等&lt;/p&gt;
+
+&lt;h3 id=&quot;系统调用&quot;&gt;系统调用&lt;/h3&gt;
+&lt;p&gt;通过修改openssl的config文件，我们可以默认调用QAT Engine来进行加解密等操作&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;vim /etc/ssl/openssl.cnf&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;需要在文件最开始声明初始化内容，写入&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl_conf = openssl_init&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在这里声明了section：openssl_init，在openssl.cnf中紧挨着第一个section前写入&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;[ openssl_init ]&lt;br /&gt;
+engines = engine_section&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;engines字段是OpenSSL识别为配置模块的关键字。该字段是包含要加载的引擎列表的部分名称。因此，对于英特尔®QAT OpenSSL *引擎，这里之后要写入:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;[ engine_section ]&lt;br /&gt;
+qat = qat_section&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;然后配置QAT Engine相关的信息&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;[ qat_section ]&lt;br /&gt;
+engine_id = qat&lt;br /&gt;
+dynamic_path = /usr/local/ssl/lib/engines-1.1/qat.so&lt;br /&gt;
+default_algorithms = ALL&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这样，在之后对openssl的调用中，都会默认使用QAT进行加速。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;openssl speed -elapsed -async_jobs 36 rsa2048&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sign/s&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;verify/s&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;rsa 2048 bits&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000034s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0.000008s&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;29359.8&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;119933.0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;以上就是在拥有QAT VF的VM中搭建Openssl + QAT Engine的全过程了。&lt;/p&gt;
+
+&lt;h2 id=&quot;问题&quot;&gt;问题&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;configdata.pm not present in the @INC path&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;export PERL5LIB=$PERL5LIB:/root/openssl-OpenSSL_1_1_1a&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;</content><author><name>Le Yao</name></author><summary type="html">本文档的目的在于提供一个具体而有效的Openssl + QAT Engine的搭建指南，区别于传统的搭建环境，我是在基于libvirt启动的虚拟机中，对利用SRIOV技术而挂载进入VM的QAT VF进行驱动加载和配置，完成Openssl Crypto Library对QAT的有效利用。</summary></entry><entry><title type="html">strongswan的安装和使用-Host-Host场景</title><link href="http://localhost:4000/2020/03/11/strongswan/" rel="alternate" type="text/html" title="strongswan的安装和使用-Host-Host场景" /><published>2020-03-11T00:00:00+08:00</published><updated>2020-03-11T00:00:00+08:00</updated><id>http://localhost:4000/2020/03/11/strongswan</id><content type="html" xml:base="http://localhost:4000/2020/03/11/strongswan/">&lt;p&gt;strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#编译安装&quot;&gt;编译安装&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#场景搭建&quot;&gt;场景搭建&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#IPSec&quot;&gt;IPSec&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#Swanctl&quot;&gt;Swanctl&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#调用测试&quot;&gt;调用测试&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#命令行调用&quot;&gt;命令行调用&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#系统调用&quot;&gt;系统调用&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#问题&quot;&gt;问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;编译安装&quot;&gt;编译安装&lt;/h2&gt;
+&lt;p&gt;下载并解压strongswan-5.8.2&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;wget http://download.strongswan.org/strongswan-5.8.2.tar.bz2&lt;br /&gt;
+tar xjvf strongswan-5.8.2.tar.bz2&lt;br /&gt;
+cd strongswan-5.8.2&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;根据自己的应用场景配置strongswan安装程序，本文档建立基于Openssl + QAT的Ipsec，所以开启openssl支持&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;./configure --prefix=/usr --sysconfdir=/etc --enable-test-vectors --disable-gmp --enable-openssl&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;其他配置详情可以通过./configure -h浏览&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;p&gt;make&lt;br /&gt;
+sudo make install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;注意，安装前请先安装好Openssl环境，QAT相关配置是可选的，具体步骤可以看&lt;a href=&quot;https://leyao-daily.github.io/2020/03/12/openssl-qat/&quot;&gt;Openssl + QAT Engine 在VF上的安装和使用&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;如果使用其他配置，请根据编译提示安装所需的软件包即可。&lt;/p&gt;
+
+&lt;h2 id=&quot;场景搭建&quot;&gt;场景搭建&lt;/h2&gt;
+&lt;p&gt;本说明中采用最简单的场景进行搭建，建立Host与Host对接的场景。
+&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/strongswan/h2h.png&quot; alt=&quot;host-to-host 场景&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;采用Strongswan搭建IPSec可以通过两种方式，旧版的IPSec工具和新版Swanctl工具，两种搭建方法都是基于Strongswan的，但配置过程完全不同。
+###IpSec&lt;/p&gt;
+
+&lt;p&gt;###Swanctl&lt;/p&gt;</content><author><name>Le Yao</name></author><summary type="html">strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。</summary></entry><entry><title type="html">一份简明的 Markdown 笔记与教程</title><link href="http://localhost:4000/2019/12/11/markdown-introduction/" rel="alternate" type="text/html" title="一份简明的 Markdown 笔记与教程" /><published>2019-12-11T00:00:00+08:00</published><updated>2019-12-11T00:00:00+08:00</updated><id>http://localhost:4000/2019/12/11/markdown-introduction</id><content type="html" xml:base="http://localhost:4000/2019/12/11/markdown-introduction/">&lt;h1&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/title.png&quot; alt=&quot;Markdown Intro&quot; /&gt;&lt;/h1&gt;
+
+&lt;p&gt;那么首先我们一起来看一下它的「定义」：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;本文档的目的不在于面面俱到地介绍 Markdown，只是作为我对其理解的笔记整理，希望能同时帮助一些对 Markdown 感兴趣的人快速上手，或是作为一个工具，供对其已经有所了解的人在需要时参考。&lt;/p&gt;
+
+&lt;p&gt;接下来请随我一起深入了解这门并不神秘的实用标记语言。&lt;/p&gt;
+
+&lt;h1 id=&quot;-1&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/toc.png&quot; alt=&quot;Table of Contents&quot; /&gt;&lt;/h1&gt;
+
+&lt;!-- vim-markdown-toc GFM --&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#背景&quot;&gt;背景&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#优点&quot;&gt;优点&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#使用场景&quot;&gt;使用场景&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#编辑工具&quot;&gt;编辑工具&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#语法&quot;&gt;语法&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#标题&quot;&gt;标题&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#段落&quot;&gt;段落&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#行内格式&quot;&gt;行内格式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#引用块&quot;&gt;引用块&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#超链接&quot;&gt;超链接&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#图片&quot;&gt;图片&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#列表&quot;&gt;列表&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#代码块&quot;&gt;代码块&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#水平分割线&quot;&gt;水平分割线&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#嵌入-html&quot;&gt;嵌入 HTML&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#扩展语法&quot;&gt;扩展语法&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#表格&quot;&gt;表格&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#任务列表&quot;&gt;任务列表&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#删除线&quot;&gt;删除线&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#自动链接&quot;&gt;自动链接&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#emoji&quot;&gt;emoji&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#奇技淫巧&quot;&gt;奇技淫巧&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#画流程图和时序图&quot;&gt;画流程图和时序图&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#插入数学公式&quot;&gt;插入数学公式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#用-markdown-做-ppt&quot;&gt;用 Markdown 做 PPT&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#用-markdown-写微信公众号&quot;&gt;用 Markdown 写微信公众号&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#更多&quot;&gt;更多&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#参考&quot;&gt;参考&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- vim-markdown-toc --&gt;
+
+&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
+
+&lt;h3 id=&quot;优点&quot;&gt;优点&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;专注于文字内容；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;纯文本，易读易写，可以方便地纳入版本控制；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;语法简单，没有什么学习成本，能轻松在码字的同时做出美观大方的排版。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;使用场景&quot;&gt;使用场景&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;各类代码托管平台&lt;/p&gt;
+
+    &lt;p&gt;主流的代码托管平台，如 GitHub、GitLab、BitBucket、Coding、Gitee 等等，都支持 Markdown 语法，很多开源项目的 README、开发文档、帮助文档、Wiki 等都用 Markdown 写作。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;技术社区和写作平台&lt;/p&gt;
+
+    &lt;p&gt;StackOverflow、CSDN、掘金、简书、GitBook、有道云笔记&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;论坛&lt;/p&gt;
+
+    &lt;p&gt;V2EX、光谷社区&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;各平台可能采用不同语言实现的 Markdown 解析引擎，或采用同一解析引擎的不同版本，而且可能有不同程度的定制与扩展，这导致在不同平台上使用 Markdown 写作时体验并不完全一致。不过幸好对于大家公认的一些标准语法，各家都是支持的。&lt;/p&gt;
+
+&lt;h3 id=&quot;编辑工具&quot;&gt;编辑工具&lt;/h3&gt;
+
+&lt;p&gt;理论上任何一款文本编辑器都能用于编辑 Markdown 文档，它们分别提供了不同程度的语法高亮、预览等功能，以下只是列举其中一部分，选择自己称手的即可。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;现代编辑器&lt;/p&gt;
+
+    &lt;p&gt;VSCode / Atom&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;传统编辑器&lt;/p&gt;
+
+    &lt;p&gt;Vim / Emacs / Sublime Text / Notepad++&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;IDE 自带编辑器&lt;/p&gt;
+
+    &lt;p&gt;IntelliJ IDEA / Android Studio / WebStorm&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;专用编辑器&lt;/p&gt;
+
+    &lt;p&gt;Ulysses / Mou / Typora / Markpad&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在线编辑器&lt;/p&gt;
+
+    &lt;p&gt;各种支持 Markdown 的网站都提供了在线编辑器&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;语法&quot;&gt;语法&lt;/h2&gt;
+
+&lt;h3 id=&quot;标题&quot;&gt;标题&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# atx-style 一级标题
+
+## 二级标题
+
+###### 六级标题
+
+Setext-style 一级标题
+===
+
+二级标题
+---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h1 id=&quot;atx-style-一级标题&quot;&gt;atx-style 一级标题&lt;/h1&gt;
+
+  &lt;h2 id=&quot;二级标题&quot;&gt;二级标题&lt;/h2&gt;
+
+  &lt;h6 id=&quot;六级标题&quot;&gt;六级标题&lt;/h6&gt;
+
+  &lt;h1 id=&quot;setext-style-一级标题&quot;&gt;Setext-style 一级标题&lt;/h1&gt;
+
+  &lt;h2 id=&quot;二级标题-1&quot;&gt;二级标题&lt;/h2&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;atx-style 一级标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;二级标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h6&amp;gt;&lt;/span&gt;六级标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h6&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Setext-style 一级标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;二级标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;段落&quot;&gt;段落&lt;/h3&gt;
+
+&lt;p&gt;中间没有空行的连续不断的几行文字被视为一个段落。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;白日依山尽，
+
+黄河入海流。
+（句号后面没空格）
+
+欲穷千里目，
+
+更上一层楼。  
+（句号后面有俩空格）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;白日依山尽，&lt;/p&gt;
+
+&lt;p&gt;黄河入海流。
+（句号后面没空格）&lt;/p&gt;
+
+&lt;p&gt;欲穷千里目，&lt;/p&gt;
+
+&lt;p&gt;更上一层楼。&lt;br /&gt;
+（句号后面有俩空格）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;白日依山尽，&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;黄河入海流。
+（句号后面没有空格）&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;欲穷千里目，&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+  更上一层楼。
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&amp;gt;&lt;/span&gt;
+  （句号后面有俩空格）
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;行内格式&quot;&gt;行内格式&lt;/h3&gt;
+
+&lt;p&gt;对段落或者部分文本的强调效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;后面俩字**加黑**
+
+后面俩字*斜体*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;后面俩字&lt;strong&gt;加黑&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;后面俩字&lt;em&gt;斜体&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+  后面俩字
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;strong&amp;gt;&lt;/span&gt;加黑&lt;span class=&quot;nt&quot;&gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+  后面俩字
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;em&amp;gt;&lt;/span&gt;斜体&lt;span class=&quot;nt&quot;&gt;&amp;lt;/em&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;引用块&quot;&gt;引用块&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; 引用块段落一。
+&amp;gt;
+&amp;gt; 引用块段落二。
+&amp;gt;&amp;gt; 内嵌引用块段落一。
+&amp;gt;
+&amp;gt; ### 引用块内的标题
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;引用块段落一。&lt;/p&gt;
+
+  &lt;p&gt;引用块段落二。&lt;/p&gt;
+
+  &lt;blockquote&gt;
+    &lt;p&gt;内嵌引用块段落一。&lt;/p&gt;
+  &lt;/blockquote&gt;
+
+  &lt;h3 id=&quot;引用块内的标题&quot;&gt;引用块内的标题&lt;/h3&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;blockquote&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;引用块段落一。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;引用块段落二。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;blockquote&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;内嵌引用块段落一。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/blockquote&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;引用块内的标题&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;引用块内的标题&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/blockquote&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;超链接&quot;&gt;超链接&lt;/h3&gt;
+
+&lt;p&gt;Markdown 支持行内式链接和引用式链接。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;行内式 [博客](https://leyao-daily.github.io &quot;我的个人博客&quot;) 链接，带 title。
+
+行内式 [GitHub](https://github.com/leyao-daily) 链接。
+
+引用式 [博客][1] 链接。
+
+引用式 [GitHub][2] 链接，带 title。
+
+[1]: https://leyao-daily.github.io
+[2]: https://github.com/leyao-daily &quot;我的 GitHub 主页&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;行内式 &lt;a href=&quot;https://leyao-daily.github.io&quot; title=&quot;我的个人博客&quot;&gt;博客&lt;/a&gt; 链接，带 title。&lt;/p&gt;
+
+&lt;p&gt;行内式 &lt;a href=&quot;https://github.com/leyao-daily&quot;&gt;GitHub&lt;/a&gt; 链接。&lt;/p&gt;
+
+&lt;p&gt;引用式 &lt;a href=&quot;https://leyao-daily.github.io&quot;&gt;博客&lt;/a&gt; 链接。&lt;/p&gt;
+
+&lt;p&gt;引用式 &lt;a href=&quot;https://github.com/leyao-daily&quot; title=&quot;我的 GitHub 主页&quot;&gt;GitHub&lt;/a&gt; 链接，带 title。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;行内式 &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://leyao-daily.github.io&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;我的个人博客&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;博客&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; 链接，带 title。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;行内式 &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://github.com/leyao-daily&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;GitHub&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; 链接。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;引用式 &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://leyao-daily.github.io&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;博客&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; 链接。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;引用式 &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://github.com/leyao-daily&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;我的 GitHub 主页&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;GitHub&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; 链接，带 title。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;图片&quot;&gt;图片&lt;/h3&gt;
+
+&lt;p&gt;在超链接的写法前加一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;!&lt;/code&gt;，就是引用图片的方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![Alt text](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico &quot;favicon&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico&quot; alt=&quot;Alt text&quot; title=&quot;favicon&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/favicon.ico&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Alt text&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;favicon&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;列表&quot;&gt;列表&lt;/h3&gt;
+
+&lt;p&gt;包括有序列表和无序列表。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- 苹果
+- 葡萄
+- 榴莲
+
+1. 苹果
+2. 葡萄
+3. 榴莲
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;苹果&lt;/li&gt;
+  &lt;li&gt;葡萄&lt;/li&gt;
+  &lt;li&gt;榴莲&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;苹果&lt;/li&gt;
+  &lt;li&gt;葡萄&lt;/li&gt;
+  &lt;li&gt;榴莲&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;苹果&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;葡萄&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;榴莲&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;ol&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;苹果&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;葡萄&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;榴莲&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ol&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其中无序列表的标记可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-&lt;/code&gt; 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*&lt;/code&gt;，有序列表前的数字可以是乱序的。&lt;/p&gt;
+
+&lt;h3 id=&quot;代码块&quot;&gt;代码块&lt;/h3&gt;
+
+&lt;p&gt;支持行内代码和代码块。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Android 里使用 `TextUtils` 类的 `isEmpty` 方法来判断字符串是否为空。
+
+```java
+if (TextUtils.isEmpty(text)) {
+    return null;
+}
+```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Android 里使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TextUtils&lt;/code&gt; 类的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty&lt;/code&gt; 方法来判断字符串是否为空。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TextUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Android 里使用 &lt;span class=&quot;nt&quot;&gt;&amp;lt;code&amp;gt;&lt;/span&gt;TextUtils&lt;span class=&quot;nt&quot;&gt;&amp;lt;/code&amp;gt;&lt;/span&gt; 类的 &lt;span class=&quot;nt&quot;&gt;&amp;lt;code&amp;gt;&lt;/span&gt;isEmpty&lt;span class=&quot;nt&quot;&gt;&amp;lt;/code&amp;gt;&lt;/span&gt; 方法来判断字符串是否为空。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;highlight highlight-source-java&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;pre&amp;gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pl-k&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;if&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt; (&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pl-smi&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;TextUtils&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pl-k&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;isEmpty(text)) {
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pl-k&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;return&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pl-c1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;null&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;;
+}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/pre&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上例中的语言标记 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java&lt;/code&gt; 可选填，可用于在编辑器和渲染后的效果里添加语法高亮。&lt;/p&gt;
+
+&lt;p&gt;块式代码也可以对整个代码段缩进四个空格，或一个 Tab 来实现。&lt;/p&gt;
+
+&lt;h3 id=&quot;水平分割线&quot;&gt;水平分割线&lt;/h3&gt;
+
+&lt;p&gt;使用一个单独行里的三个或以上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-&lt;/code&gt; 来生产一条水平分割线，它们之间可以有空格。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;***
+
+-----
+
+- - -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;hr /&amp;gt;
+
+&amp;lt;hr /&amp;gt;
+
+&amp;lt;hr /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;嵌入-html&quot;&gt;嵌入 HTML&lt;/h3&gt;
+
+&lt;p&gt;Markdown 标记语言的目的不是替代 HTML，也不是发明一种更便捷的插入 HTML 标签的方式。它对应的只是 HTML 标签的一个很小的子集。&lt;/p&gt;
+
+&lt;p&gt;对于那些没有办法用 Markdown 语法来对应的 HTML 标签，直接使用 HTML 来写就好了。&lt;/p&gt;
+
+&lt;h2 id=&quot;扩展语法&quot;&gt;扩展语法&lt;/h2&gt;
+
+&lt;p&gt;本节的内容是介绍一些受到广泛支持的 Markdown 扩展语法。&lt;/p&gt;
+
+&lt;h3 id=&quot;表格&quot;&gt;表格&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 编号  | 姓名（左） | 年龄（右） | 性别（中） |
+| ----- | :--------  | ---------: | :------:   |
+| 0     | 张三       | 28         | 男         |
+| 1     | 李四       | 29         | 男         |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;编号&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;姓名（左）&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;年龄（右）&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;性别（中）&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;张三&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;28&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;男&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;李四&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;29&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;男&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;table&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;thead&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;th&amp;gt;&lt;/span&gt;编号&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;th&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;left&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;姓名（左）&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;th&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;right&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;年龄（右）&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;th&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;center&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;性别（中）&lt;span class=&quot;nt&quot;&gt;&amp;lt;/th&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/thead&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;tbody&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;left&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;张三&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;right&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;28&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;center&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;男&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;tr&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&amp;gt;&lt;/span&gt;1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;left&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;李四&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;right&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;29&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;td&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;align=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;center&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;男&lt;span class=&quot;nt&quot;&gt;&amp;lt;/td&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tr&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/tbody&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/table&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;任务列表&quot;&gt;任务列表&lt;/h3&gt;
+
+&lt;p&gt;在 GitHub / GitLab 里有较好的支持。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- [x] 洗碗
+- [ ] 清洗油烟机
+- [ ] 拖地
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul class=&quot;task-list&quot;&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; checked=&quot;checked&quot; /&gt;洗碗&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;清洗油烟机&lt;/li&gt;
+  &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;拖地&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;contains-task-list&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;checkbox&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item-checkbox&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;checked=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; 洗碗&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;checkbox&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item-checkbox&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; 清洗油烟机&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;checkbox&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;task-list-item-checkbox&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; 拖地&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果是在 GitHub / GitLab 的 Issue 里，会附赠任务完成比例提示效果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/task-list-1.png&quot; alt=&quot;task list 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;还可以直接在网页上拖动调整顺序，勾选和取消勾选。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/task-list-2.png&quot; alt=&quot;task list 2&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;删除线&quot;&gt;删除线&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;后面三个字打上~~删除线~~。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;后面三个字打上&lt;del&gt;删除线&lt;/del&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;后面三个字打上&lt;span class=&quot;nt&quot;&gt;&amp;lt;del&amp;gt;&lt;/span&gt;删除线&lt;span class=&quot;nt&quot;&gt;&amp;lt;/del&amp;gt;&lt;/span&gt;。&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;自动链接&quot;&gt;自动链接&lt;/h3&gt;
+
+&lt;p&gt;自动链接扩展，即：当识别到 URL，或用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; 包括的 URL 时，会自动为其生成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a&lt;/code&gt; 标签。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://github.com
+
+&amp;lt;example@gmail.com&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;https://github.com&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;mailto:example@gmail.com&quot;&gt;example@gmail.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://github.com&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;https://github.com&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mailto:example@gmail.com&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;example@gmail.com&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;emoji&quot;&gt;emoji&lt;/h3&gt;
+
+&lt;p&gt;以 GitHub Pages 为例。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Markdown：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:camel: :blush: :smile:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;预览效果：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;:camel: :blush: :smile:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对应 HTML：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;emoji&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:camel:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:camel:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://assets-cdn.github.com/images/icons/emoji/unicode/1f42b.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;emoji&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:blush:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:blush:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://assets-cdn.github.com/images/icons/emoji/unicode/1f60a.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;emoji&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:smile:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:smile:&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;20&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;奇技淫巧&quot;&gt;奇技淫巧&lt;/h2&gt;
+
+&lt;p&gt;脑洞清奇的工程师们还发掘了很多使用 Markdown 的方法，大部分都是引入第三方 JavaScript 插件来实现。对这部分我只做简述，对其中的部分功能比如作图等，还是推荐用专门的可视化工具去做。&lt;/p&gt;
+
+&lt;h3 id=&quot;画流程图和时序图&quot;&gt;画流程图和时序图&lt;/h3&gt;
+
+&lt;p&gt;有部分网站和编辑器实现了对 Markdown 里流程图和时序图的支持，比如我们使用的项目管理工具 TAPD 的在线编辑器，还有 VSCode + 插件 Markdown Preview Enhanced 等。&lt;/p&gt;
+
+&lt;p&gt;以我们使用的项目管理工具 TAPD 的在线编辑器为例：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-flowchart.png&quot; alt=&quot;流程图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-seq.png&quot; alt=&quot;时序图&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;插入数学公式&quot;&gt;插入数学公式&lt;/h3&gt;
+
+&lt;p&gt;仍然以 TAPD 为例：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/markdown/tapd-markdown-math.png&quot; alt=&quot;数学公式&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;应该是利用 JavaScript 支持了 LaTeX 公式语法。&lt;/p&gt;
+
+&lt;h3 id=&quot;用-markdown-做-ppt&quot;&gt;用 Markdown 做 PPT&lt;/h3&gt;
+
+&lt;p&gt;有专门的工具 &lt;a href=&quot;https://github.com/yhatt/marp&quot;&gt;Marp&lt;/a&gt;，另外使用 VSCode + 插件 Markdown Preview Enhanced 也可以实现。&lt;/p&gt;
+
+&lt;h3 id=&quot;用-markdown-写微信公众号&quot;&gt;用 Markdown 写微信公众号&lt;/h3&gt;
+
+&lt;p&gt;可以将公众号素材用 Markdown 编辑好后，贴到在线排版工具以后，复制到公众号编辑器里即可。有多种页面主题和代码主题可选择。&lt;/p&gt;
+
+&lt;h3 id=&quot;更多&quot;&gt;更多&lt;/h3&gt;
+
+&lt;p&gt;想象力丰富的工程师们还扩展了很多基于 Markdown 的玩法，包括但不限于：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;自动生成 / 更新 Table of Contents&lt;/li&gt;
+  &lt;li&gt;流程图 / 时序图&lt;/li&gt;
+  &lt;li&gt;制作幻灯片&lt;/li&gt;
+  &lt;li&gt;集成 PlantUML / GraphViz 的能力&lt;/li&gt;
+  &lt;li&gt;导出 HTML / PDF / 电子书&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上功能基本都可以用 VSCode + 插件 Markdown Preview Enhanced 实现。&lt;/p&gt;
+
+&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://daringfireball.net/projects/markdown/syntax&quot;&gt;Markdown: Syntax - DARING FIREBALL&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/Markdown&quot;&gt;Markdown - 维基百科&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.github.com/gfm/&quot;&gt;GitHub Flavored Markdown Spec&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Le Yao</name></author><summary type="html"></summary></entry></feed>

@@ -15,7 +15,8 @@ keywords: rust, program language, features, web-assembly
 
 ## 零成本抽象
 零成本抽象的定义来自C++，C++创始人Bjarne Stroustrup定义：
-> 通常，C++的实现遵循零开销原则：你不使用的，你不负担成本。更进一步：你使用的，你也没法更优化。
+> What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.
 
-
+零成本抽象定义：
+> 1. 没有整体开销：零成本抽象不应该对不使用它的程序的性能表现产生负面影响。
 

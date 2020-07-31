@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Categories &mdash; Le's Zone</title>
+    <title>strongswan的安装和使用-Host-Host场景 &mdash; Le's Zone</title>
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
@@ -21,26 +21,28 @@
     
 
     
-    <link rel="canonical" href="http://localhost:4000/categories/">
+    <link rel="canonical" href="http://localhost:4000/2020/03/11/strongswan/">
     <link rel="alternate" type="application/atom+xml" title="Le's Zone" href="http://localhost:4000/feed.xml">
     <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
     
-    <meta property="og:title" content="Categories">
+    <meta property="og:title" content="strongswan的安装和使用-Host-Host场景">
       
-    <meta name="keywords" content="分类">
-    <meta name="og:keywords" content="分类">
+    <meta name="keywords" content="network, openssl, strongswan, ipsec, vpn">
+    <meta name="og:keywords" content="network, openssl, strongswan, ipsec, vpn">
       
-    <meta name="description" content="哈哈，你找到了我的文章基因库">
-    <meta name="og:description" content="哈哈，你找到了我的文章基因库">
+    <meta name="description" content="strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。">
+    <meta name="og:description" content="strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。">
       
     
     
         
     
-    <meta property="og:url" content="http://localhost:4000/categories/">
+    <meta property="og:url" content="http://localhost:4000/2020/03/11/strongswan/">
     <meta property="og:site_name" content="Le's Zone">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-03-11">
     
     <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
     <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
@@ -70,7 +72,7 @@
                 
                 <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
                 
-                <a href="http://localhost:4000/categories/" class=" selected  site-header-nav-item" target="" title="分类">分类</a>
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
                 
                 <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
                 
@@ -85,79 +87,120 @@
     </header>
     <!-- / header -->
 
-    <section class="collection-head small geopattern" data-pattern-id="Categories">
-    <div class="container">
-        <div class="columns">
-            <div class="column three-fourths">
-                <div class="collection-title">
-                    <h1 class="collection-header">Categories</h1>
-                </div>
-            </div>
+    <section class="collection-head small geopattern" data-pattern-id="strongswan的安装和使">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">strongswan的安装和使用-Host-Host场景</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/03/11
+	    <span id="busuanzi_container_page_pv"> | 访问量：<span id="busuanzi_value_page_pv"></span> 次</span>
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Network" title="Network">Network</a>
+          </span>
+          
         </div>
+      </div>
     </div>
+  </div>
+</div>
 </section>
 <!-- / .banner -->
 <section class="container content">
-    <div class="columns">
-        <div class="column three-fourths" >
-            <article class="article-content markdown-body">
-                <section class="container posts-content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。</p>
+
+<ul>
+  <li><a href="#编译安装">编译安装</a></li>
+  <li><a href="#场景搭建">场景搭建</a>
+    <ul>
+      <li><a href="#IPSec">IPSec</a></li>
+      <li><a href="#Swanctl">Swanctl</a></li>
+    </ul>
+  </li>
+  <li><a href="#调用测试">调用测试</a>
+    <ul>
+      <li><a href="#命令行调用">命令行调用</a></li>
+      <li><a href="#系统调用">系统调用</a></li>
+    </ul>
+  </li>
+  <li><a href="#问题">问题</a></li>
+</ul>
+
+<h2 id="编译安装">编译安装</h2>
+<p>下载并解压strongswan-5.8.2</p>
+<blockquote>
+  <p>wget http://download.strongswan.org/strongswan-5.8.2.tar.bz2<br />
+tar xjvf strongswan-5.8.2.tar.bz2<br />
+cd strongswan-5.8.2</p>
+</blockquote>
+
+<p>根据自己的应用场景配置strongswan安装程序，本文档建立基于Openssl + QAT的Ipsec，所以开启openssl支持</p>
+<blockquote>
+  <p>./configure --prefix=/usr --sysconfdir=/etc --enable-test-vectors --disable-gmp --enable-openssl</p>
+  <blockquote>
+    <p>其他配置详情可以通过./configure -h浏览</p>
+  </blockquote>
+
+  <p>make<br />
+sudo make install</p>
+</blockquote>
+
+<p>注意，安装前请先安装好Openssl环境，QAT相关配置是可选的，具体步骤可以看<a href="https://leyao-daily.github.io/2020/03/12/openssl-qat/">Openssl + QAT Engine 在VF上的安装和使用</a></p>
+
+<p>如果使用其他配置，请根据编译提示安装所需的软件包即可。</p>
+
+<h2 id="场景搭建">场景搭建</h2>
+<p>本说明中采用最简单的场景进行搭建，建立Host与Host对接的场景。
+<img src="https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/strongswan/h2h.png" alt="host-to-host 场景" /></p>
+
+<p>采用Strongswan搭建IPSec可以通过两种方式，旧版的IPSec工具和新版Swanctl工具，两种搭建方法都是基于Strongswan的，但配置过程完全不同。
+###IpSec</p>
+
+<p>###Swanctl</p>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/03/11/strongswan/',
+            clientID: 'c41651ae180cca6590c9',
+            clientSecret: 'fe8100b7450c2260d7e5af42d79d69383ea64987',
+            repo: 'blog-comments',
+            owner: 'leyao-daily',
+            admin: ['leyao-daily'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
 
 
-<h3>Crypto</h3>
-<ol class="posts-list" id="Crypto">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-03-12</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/03/12/openssl-qat/">Openssl + QAT Engine 在VF上的安装和使用</a>
-</li>
-
-</ol>
-
-<h3>Language</h3>
-<ol class="posts-list" id="Language">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-04-26</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/04/26/Rust-Features/">Rust语言特性总结</a>
-</li>
-
-</ol>
-
-<h3>Markdown</h3>
-<ol class="posts-list" id="Markdown">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2019-12-11</span>
-<a class="posts-list-name" href="http://localhost:4000/2019/12/11/markdown-introduction/">一份简明的 Markdown 笔记与教程</a>
-</li>
-
-</ol>
-
-<h3>Network</h3>
-<ol class="posts-list" id="Network">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-03-11</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/03/11/strongswan/">strongswan的安装和使用-Host-Host场景</a>
-</li>
-
-</ol>
-
-</section>
-<!-- /section.content -->
-
-            </article>
-            <div class="share">
-                <div class="share-component"></div>
-            </div>
-            <div class="comment">
-                
-
-            </div>
-        </div>
-        <div class="column one-fourth">
-            
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
 <h3>Search</h3>
 <div id="site_search">
     <input type="text" id="search_box" placeholder="Search">
@@ -182,48 +225,22 @@ SimpleJekyllSearch({
 })
 </script>
 
-            
+    
 
-            
-<h3>Blog Categories</h3>
-<div id="blog-categories">
-  <ul class="list-group">
     
-    
-    <li class="list-group-item">
-    <a href="#Crypto">Crypto</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Language">Language</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Markdown">Markdown</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Network">Network</a>
-    <span class="badge">1</span>
-    </li>
-    
-  </ul>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+  <!-- Links that trigger the jumping -->
+  <!-- Added by javascript below -->
+  <dl></dl>
+  </section>
 </div>
 
-<script type="text/javascript">
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
 
-  $(document).ready(function(){
-    $("#blog-categories li").css('text-transform','capitalize')
-  });
-
-</script>
-
-
-        </div>
-    </div>
+  </div>
+</div>
 </section>
 <!-- /section.content -->
 

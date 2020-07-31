@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Openssl + QAT Engine 在VF上的安装和使用 &mdash; Le's Zone</title>
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
+    <!-- Latest compiled and minified CSS -->
+    
+
+    
+    <link rel="canonical" href="http://localhost:4000/2020/03/12/openssl-qat/">
+    <link rel="alternate" type="application/atom+xml" title="Le's Zone" href="http://localhost:4000/feed.xml">
+    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+    
+    <meta property="og:title" content="Openssl + QAT Engine 在VF上的安装和使用">
+      
+    <meta name="keywords" content="sriov, qat, openssl, pf/vf, crypto">
+    <meta name="og:keywords" content="sriov, qat, openssl, pf/vf, crypto">
+      
+    <meta name="description" content="本文档的目的在于提供一个具体而有效的Openssl + QAT Engine的搭建指南，区别于传统的搭建环境，我是在基于libvirt启动的虚拟机中，对利用SRIOV技术而挂载进入VM的QAT VF进行驱动加载和配置，完成Openssl Crypto Library对QAT的有效利用。">
+    <meta name="og:description" content="本文档的目的在于提供一个具体而有效的Openssl + QAT Engine的搭建指南，区别于传统的搭建环境，我是在基于libvirt启动的虚拟机中，对利用SRIOV技术而挂载进入VM的QAT VF进行驱动加载和配置，完成Openssl Crypto Library对QAT的有效利用。">
+      
+    
+    
+        
+    
+    <meta property="og:url" content="http://localhost:4000/2020/03/12/openssl-qat/">
+    <meta property="og:site_name" content="Le's Zone">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-03-12">
+    
+    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
+    <script src="http://localhost:4000/assets/js/main.js"></script>
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?0677a1722c3399d9c550d7b0ea9d6a07";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</head>
+<body class="" data-mz="">
+    <header class="site-header">
+        <div class="container">
+            <h1><a href="http://localhost:4000/" title="Le's Zone"><span class="octicon octicon-mark-github"></span> Le's Zone</a></h1>
+            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <nav class="site-header-nav" role="navigation">
+                
+                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
+                
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
+                
+                <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
+                
+                <a href="http://localhost:4000/wiki/" class=" site-header-nav-item" target="" title="维基">维基</a>
+                
+                <a href="http://localhost:4000/links/" class=" site-header-nav-item" target="" title="链接">链接</a>
+                
+                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
+                
+            </nav>
+        </div>
+    </header>
+    <!-- / header -->
+
+    <section class="collection-head small geopattern" data-pattern-id="Openssl + QAT E">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Openssl + QAT Engine 在VF上的安装和使用</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/03/12
+	    <span id="busuanzi_container_page_pv"> | 访问量：<span id="busuanzi_value_page_pv"></span> 次</span>
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Crypto" title="Crypto">Crypto</a>
+          </span>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!-- / .banner -->
+<section class="container content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本文档的目的在于提供一个具体而有效的Openssl + QAT Engine的搭建指南，区别于传统的搭建环境，我是在基于libvirt启动的虚拟机中，对利用SRIOV技术而挂载进入VM的QAT VF进行驱动加载和配置，完成Openssl Crypto Library对QAT的有效利用。</p>
+
+<ul>
+  <li><a href="#背景">背景</a>
+    <ul>
+      <li><a href="#搭建环境">搭建环境</a></li>
+      <li><a href="#系统配置">系统配置</a></li>
+    </ul>
+  </li>
+  <li><a href="#安装使用">安装使用</a>
+    <ul>
+      <li><a href="#基本环境">基本环境</a></li>
+      <li><a href="#QAT驱动安装">QAT驱动安装</a></li>
+      <li><a href="#Openssl安装">Openssl安装</a></li>
+      <li><a href="#QAT Engine安装">QAT Engine安装</a></li>
+      <li><a href="#QAT VF配置">QAT VF配置</a></li>
+    </ul>
+  </li>
+  <li><a href="#调用测试">调用测试</a>
+    <ul>
+      <li><a href="#命令行调用">命令行调用</a></li>
+      <li><a href="#系统调用">系统调用</a></li>
+    </ul>
+  </li>
+  <li><a href="#问题">问题</a></li>
+</ul>
+
+<h2 id="背景">背景</h2>
+<h3 id="搭建需求">搭建需求</h3>
+<p>使用QAT，要求主机或者Sever有QAT加速卡，本文档中搭建所用的服务器有三个QAT卡</p>
+<blockquote>
+  <p>root@ubuntu:~# lspci -d:37c8</p>
+  <blockquote>
+    <p>0000:3d:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)<br />
+0000:3f:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)<br />
+0000:da:00.0 Co-processor: Intel Corporation C62x Chipset QuickAssist Technology (rev 04)</p>
+  </blockquote>
+</blockquote>
+
+<h3 id="系统配置">系统配置</h3>
+<blockquote>
+  <p>cpu</p>
+  <blockquote>
+    <p>CPU(s):              72<br />
+Model name:          Intel(R) Xeon(R) Gold 6139 CPU @ 2.30GHz</p>
+  </blockquote>
+</blockquote>
+
+<blockquote>
+  <p>memory</p>
+  <blockquote>
+    <p>Mem:           251G</p>
+  </blockquote>
+</blockquote>
+
+<blockquote>
+  <p>OS</p>
+  <blockquote>
+    <p>Ubuntu-18.04-server<br />
+Linux ubuntu 4.15.0-55-generic #60-Ubuntu SMP Tue Jul 2 18:22:20 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux</p>
+  </blockquote>
+</blockquote>
+
+<p>注意：本文档接下来的步骤都是在Host中启动的libvirt虚拟机中进行的操作。</p>
+
+<h2 id="安装使用">安装使用</h2>
+<h3 id="基本环境">基本环境</h3>
+<p>请在root权限下进行本文档的步骤</p>
+<blockquote>
+  <p>sudo -i</p>
+</blockquote>
+
+<p>安装后续安装所需的库，挂载依赖驱动</p>
+<blockquote>
+  <p>apt update<br />
+apt-get install -y gcc make libpci-dev g++ pkg-config libssl-dev autoconf libtool libnuma-dev<br />
+modprobe uio</p>
+</blockquote>
+
+<p>检查QAT VF被正确分配</p>
+<blockquote>
+  <p>lspci -d:37c9</p>
+  <blockquote>
+    <p>00:04.0 Co-processor: Intel Corporation Device 37c9 (rev 04)</p>
+  </blockquote>
+</blockquote>
+
+<h3 id="qat驱动安装">QAT驱动安装</h3>
+<p>从01.org下载对应机器中QAT卡的驱动 <a href="https://01.org/intel-quickassist-technology">指南和驱动</a></p>
+<blockquote>
+  <p>cd<br />
+wget https://01.org/sites/default/files/downloads//qat1.7.l.4.8.0-00005.tar.gz</p>
+</blockquote>
+
+<p>创建工作目录并解压驱动包</p>
+<blockquote>
+  <p>mkdir QAT<br />
+mv qat1.7.l.4.8.0-00005.tar.gz ./QAT<br />
+cd QAT &amp;&amp; tar zxvf qat1.7.l.4.8.0-00005.tar.gz</p>
+</blockquote>
+
+<p>配置QAT并编译安装，对于QAT VF来说，驱动安装需要配置guest sriov mode</p>
+<blockquote>
+  <p>./configure --enable-icp-sriov=guest<br />
+make<br />
+make install</p>
+</blockquote>
+
+<p>（Optional）安装sample应用</p>
+<blockquote>
+  <p>make samples-install</p>
+</blockquote>
+
+<p>确认QAT驱动安装并加载</p>
+<blockquote>
+  <p>lsmod | grep qat</p>
+  <blockquote>
+    <p>qat_c62xvf    16384  0</p>
+
+    <p>intel_qat     196608  2 usdm_drv,qat_c62xvf</p>
+
+    <p>uio           20480  1 intel_qat</p>
+  </blockquote>
+
+  <p>#还可以通过sample应用进行QAT测试<br />
+cpa_sample_code</p>
+</blockquote>
+
+<h3 id="openssl安装">Openssl安装</h3>
+<p>下载安装包并解压</p>
+<blockquote>
+  <p>cd<br />
+wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz --no-check-certificate<br />
+tar zxvf OpenSSL_1_1_1a.tar.gz<br />
+cd openssl-OpenSSL_1_1_1a</p>
+</blockquote>
+
+<p>配置并安装Openssl</p>
+<blockquote>
+  <p>./config --prefix=/usr/local/ssl<br />
+make depend<br />
+make<br />
+make install</p>
+</blockquote>
+
+<p>配置Openssl Engine环境</p>
+<blockquote>
+  <p>echo export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1 &gt;&gt; /root/.bashrc<br />
+export OPENSSL_ENGINES=/usr/local/ssl/lib/engines-1.1</p>
+</blockquote>
+
+<h3 id="qat-engine安装">QAT Engine安装</h3>
+<p>下载安装包并解压</p>
+<blockquote>
+  <p>cd<br />
+wget https://github.com/intel/QAT_Engine/archive/v0.5.43.tar.gz --no-check-certificate<br />
+tar zxvf v0.5.43.tar.gz<br />
+cd QAT_Engine-0.5.43</p>
+</blockquote>
+
+<p>配置并安装QAT Engine</p>
+<blockquote>
+  <p>./autogen.sh<br />
+./configure --with-qat_dir=/root/QAT --with-openssl_install_dir=/usr/local/ssl<br />
+make<br />
+make install</p>
+</blockquote>
+
+<h3 id="qat-vf配置">QAT VF配置</h3>
+<p>本文档所搭建环境中QAT使用C6xx系列驱动，而且是对VF的编译，于是编译完成后会在/etc下看到VF配置文件</p>
+<blockquote>
+  <p>ls /etc | grep c6xx</p>
+  <blockquote>
+    <p>c6xxvf_dev0.conf</p>
+  </blockquote>
+</blockquote>
+
+<p>这里要注意，因为要通过Openssl使用QAT Engine，所以对QAT的配置需要更改section name并重启qat_service</p>
+<blockquote>
+  <p>sed -i 's/\[SSL\]/\[SHIM\]/g' /etc/c6xxvf_dev0.conf<br />
+service qat_service restart</p>
+</blockquote>
+
+<p>Openssl打印QAT引擎信息</p>
+<blockquote>
+  <p>openssl engine -t -c -vvvv qat</p>
+  <blockquote>
+    <p>(qat) Reference implementation of QAT crypto engine<br />
+[RSA, DSA, DH, AES-128-CBC-HMAC-SHA1, AES-128-CBC-HMAC-SHA256, AES-256-CBC-HMAC-SHA1, AES-256-CBC-HMAC-SHA256, TLS1-PRF, HKDF]<br />
+    [ available ]<br />
+    …</p>
+  </blockquote>
+</blockquote>
+
+<h2 id="调用测试">调用测试</h2>
+<h3 id="命令行调用">命令行调用</h3>
+<p>Openssl通过命令行显示的调用QAT Engine来使用QAT卡十分简单，只需要在命令中加入-engine qat
+纯Openssl同步测速rsa2048</p>
+<blockquote>
+  <p>openssl speed -elapsed rsa2048</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">sign</th>
+      <th style="text-align: center">verify</th>
+      <th style="text-align: center">sign/s</th>
+      <th style="text-align: center">verify/s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rsa 2048 bits</td>
+      <td style="text-align: center">0.000612s</td>
+      <td style="text-align: center">0.000018s</td>
+      <td style="text-align: center">1633.5</td>
+      <td style="text-align: center">57114.6</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用QAT卡同步测速res2048</p>
+<blockquote>
+  <p>openssl speed -engine qat -elapsed rsa2048</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">sign</th>
+      <th style="text-align: center">verify</th>
+      <th style="text-align: center">sign/s</th>
+      <th style="text-align: center">verify/s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rsa 2048 bits</td>
+      <td style="text-align: center">0.000472s</td>
+      <td style="text-align: center">0.000069s</td>
+      <td style="text-align: center">2118.5</td>
+      <td style="text-align: center">14549.3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>纯Openssl异步测速rsa2048</p>
+<blockquote>
+  <p>openssl speed -elapsed -async_jobs 36 rsa2048</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">sign</th>
+      <th style="text-align: center">verify</th>
+      <th style="text-align: center">sign/s</th>
+      <th style="text-align: center">verify/s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rsa 2048 bits</td>
+      <td style="text-align: center">0.000614s</td>
+      <td style="text-align: center">0.000018s</td>
+      <td style="text-align: center">1627.6</td>
+      <td style="text-align: center">56026.5</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用QAT卡异步测速res2048</p>
+<blockquote>
+  <p>openssl speed -engine qat -elapsed -async_jobs 36 rsa2048</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">sign</th>
+      <th style="text-align: center">verify</th>
+      <th style="text-align: center">sign/s</th>
+      <th style="text-align: center">verify/s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rsa 2048 bits</td>
+      <td style="text-align: center">0.000034s</td>
+      <td style="text-align: center">0.000009s</td>
+      <td style="text-align: center">29235.7</td>
+      <td style="text-align: center">109564.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>其中rsa2048是测试的算法，还可以替换测试其他如ecdhp256、ecdsap256等等</p>
+
+<h3 id="系统调用">系统调用</h3>
+<p>通过修改openssl的config文件，我们可以默认调用QAT Engine来进行加解密等操作</p>
+<blockquote>
+  <p>vim /etc/ssl/openssl.cnf</p>
+</blockquote>
+
+<p>需要在文件最开始声明初始化内容，写入</p>
+<blockquote>
+  <p>openssl_conf = openssl_init</p>
+</blockquote>
+
+<p>在这里声明了section：openssl_init，在openssl.cnf中紧挨着第一个section前写入</p>
+<blockquote>
+  <p>[ openssl_init ]<br />
+engines = engine_section</p>
+</blockquote>
+
+<p>engines字段是OpenSSL识别为配置模块的关键字。该字段是包含要加载的引擎列表的部分名称。因此，对于英特尔®QAT OpenSSL *引擎，这里之后要写入:</p>
+<blockquote>
+  <p>[ engine_section ]<br />
+qat = qat_section</p>
+</blockquote>
+
+<p>然后配置QAT Engine相关的信息</p>
+<blockquote>
+  <p>[ qat_section ]<br />
+engine_id = qat<br />
+dynamic_path = /usr/local/ssl/lib/engines-1.1/qat.so<br />
+default_algorithms = ALL</p>
+</blockquote>
+
+<p>这样，在之后对openssl的调用中，都会默认使用QAT进行加速。</p>
+<blockquote>
+  <p>openssl speed -elapsed -async_jobs 36 rsa2048</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">sign</th>
+      <th style="text-align: center">verify</th>
+      <th style="text-align: center">sign/s</th>
+      <th style="text-align: center">verify/s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">rsa 2048 bits</td>
+      <td style="text-align: center">0.000034s</td>
+      <td style="text-align: center">0.000008s</td>
+      <td style="text-align: center">29359.8</td>
+      <td style="text-align: center">119933.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>以上就是在拥有QAT VF的VM中搭建Openssl + QAT Engine的全过程了。</p>
+
+<h2 id="问题">问题</h2>
+<blockquote>
+  <p>configdata.pm not present in the @INC path</p>
+  <blockquote>
+    <p>export PERL5LIB=$PERL5LIB:/root/openssl-OpenSSL_1_1_1a</p>
+  </blockquote>
+</blockquote>
+
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/03/12/openssl-qat/',
+            clientID: 'c41651ae180cca6590c9',
+            clientSecret: 'fe8100b7450c2260d7e5af42d79d69383ea64987',
+            repo: 'blog-comments',
+            owner: 'leyao-daily',
+            admin: ['leyao-daily'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
+<h3>Search</h3>
+<div id="site_search">
+    <input type="text" id="search_box" placeholder="Search">
+</div>
+
+<ul id="search_results"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
+<script src="http://localhost:4000/assets/js/simple-jekyll-search.min.js"></script>
+<script src="http://localhost:4000/assets/js/search.js"></script>
+
+<script type="text/javascript">
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search_box'),
+    resultsContainer: document.getElementById('search_results'),
+    json: 'http://localhost:4000/assets/search_data.json',
+    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    noResultsText: 'No results found',
+    limit: 10,
+    fuzzy: false,
+    exclude: ['Welcome']
+})
+</script>
+
+    
+
+    
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+  <!-- Links that trigger the jumping -->
+  <!-- Added by javascript below -->
+  <dl></dl>
+  </section>
+</div>
+
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+
+  </div>
+</div>
+</section>
+<!-- /section.content -->
+
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                    © 2019
+                    <span title="Le Yao">Le Yao</span>
+                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+                </li>
+            </ul>
+            <a href="https://github.com/leyao-daily/leyao-daily.github.io" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+                
+                <li>
+                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/archives/" title="归档" target="">归档</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/wiki/" title="维基" target="">维基</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/links/" title="链接" target="">链接</a>
+                </li>
+                
+                <li>
+                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
+            </ul>
+
+        </div>
+    </footer>
+    <div class="tools-wrapper">
+      <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <span id="busuanzi_container_site_pv">本站总访问量：<span id="busuanzi_value_site_pv"></span>次</span>
+    <!-- / footer -->
+    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
+    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
+    <script src="http://localhost:4000/assets/js/prism.js"></script>
+    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+    <script>
+      jQuery(document).ready(function($) {
+        // geopattern
+        $('.geopattern').each(function(){
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+       // hljs.initHighlightingOnLoad();
+      });
+    </script>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div style="display:none">
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-154365591-1', 'auto');
+        ga('send', 'pageview');
+
+      </script>
+    </div>
+    
+</body>
+</html>

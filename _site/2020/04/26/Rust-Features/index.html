@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Categories &mdash; Le's Zone</title>
+    <title>Rust语言特性总结 &mdash; Le's Zone</title>
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
     <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
@@ -21,26 +21,28 @@
     
 
     
-    <link rel="canonical" href="http://localhost:4000/categories/">
+    <link rel="canonical" href="http://localhost:4000/2020/04/26/Rust-Features/">
     <link rel="alternate" type="application/atom+xml" title="Le's Zone" href="http://localhost:4000/feed.xml">
     <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
     
-    <meta property="og:title" content="Categories">
+    <meta property="og:title" content="Rust语言特性总结">
       
-    <meta name="keywords" content="分类">
-    <meta name="og:keywords" content="分类">
+    <meta name="keywords" content="rust, program language, features, web-assembly">
+    <meta name="og:keywords" content="rust, program language, features, web-assembly">
       
-    <meta name="description" content="哈哈，你找到了我的文章基因库">
-    <meta name="og:description" content="哈哈，你找到了我的文章基因库">
+    <meta name="description" content="本文对Rust语言特性进行了简单的介绍和总结。">
+    <meta name="og:description" content="本文对Rust语言特性进行了简单的介绍和总结。">
       
     
     
         
     
-    <meta property="og:url" content="http://localhost:4000/categories/">
+    <meta property="og:url" content="http://localhost:4000/2020/04/26/Rust-Features/">
     <meta property="og:site_name" content="Le's Zone">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="zh_CN" />
+    
+    <meta property="article:published_time" content="2020-04-26">
     
     <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
     <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
@@ -70,7 +72,7 @@
                 
                 <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
                 
-                <a href="http://localhost:4000/categories/" class=" selected  site-header-nav-item" target="" title="分类">分类</a>
+                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
                 
                 <a href="http://localhost:4000/archives/" class=" site-header-nav-item" target="" title="归档">归档</a>
                 
@@ -85,79 +87,95 @@
     </header>
     <!-- / header -->
 
-    <section class="collection-head small geopattern" data-pattern-id="Categories">
-    <div class="container">
-        <div class="columns">
-            <div class="column three-fourths">
-                <div class="collection-title">
-                    <h1 class="collection-header">Categories</h1>
-                </div>
-            </div>
+    <section class="collection-head small geopattern" data-pattern-id="Rust语言特性总结">
+<div class="container">
+  <div class="columns">
+    <div class="column three-fourths">
+      <div class="collection-title">
+        <h1 class="collection-header">Rust语言特性总结</h1>
+        <div class="collection-info">
+          
+          <span class="meta-info">
+            <span class="octicon octicon-calendar"></span> 2020/04/26
+	    <span id="busuanzi_container_page_pv"> | 访问量：<span id="busuanzi_value_page_pv"></span> 次</span>
+          </span>
+          
+          
+          <span class="meta-info">
+            <span class="octicon octicon-file-directory"></span>
+            <a href="http://localhost:4000/categories/#Language" title="Language">Language</a>
+          </span>
+          
         </div>
+      </div>
     </div>
+  </div>
+</div>
 </section>
 <!-- / .banner -->
 <section class="container content">
-    <div class="columns">
-        <div class="column three-fourths" >
-            <article class="article-content markdown-body">
-                <section class="container posts-content">
+<div class="columns">
+  <div class="column three-fourths" >
+    <article class="article-content markdown-body">
+    <p>本文对Rust语言特性进行了简单的介绍和总结。</p>
+
+<ul>
+  <li><a href="#零开销的抽象">零成本的抽象</a></li>
+  <li><a href="#调用测试">调用测试</a>
+    <ul>
+      <li><a href="#系统调用">系统调用</a></li>
+    </ul>
+  </li>
+  <li><a href="#问题">问题</a></li>
+</ul>
+
+<h2 id="零成本抽象">零成本抽象</h2>
+<p>零成本抽象的定义来自C++，C++创始人Bjarne Stroustrup定义：</p>
+<blockquote>
+  <p>What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better.</p>
+</blockquote>
+
+<p>零成本抽象定义：</p>
+<blockquote>
+  <ol>
+    <li>没有整体开销：零成本抽象不应该对不使用它的程序的性能表现产生负面影响。</li>
+  </ol>
+</blockquote>
 
 
-<h3>Crypto</h3>
-<ol class="posts-list" id="Crypto">
+    </article>
+    <div class="share">
+      <div class="share-component"></div>
+    </div>
+    <div class="comment">
+      
 
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-03-12</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/03/12/openssl-qat/">Openssl + QAT Engine 在VF上的安装和使用</a>
-</li>
+  
 
-</ol>
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2020/04/26/Rust-Features/',
+            clientID: 'c41651ae180cca6590c9',
+            clientSecret: 'fe8100b7450c2260d7e5af42d79d69383ea64987',
+            repo: 'blog-comments',
+            owner: 'leyao-daily',
+            admin: ['leyao-daily'],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
 
-<h3>Language</h3>
-<ol class="posts-list" id="Language">
 
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-04-26</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/04/26/Rust-Features/">Rust语言特性总结</a>
-</li>
-
-</ol>
-
-<h3>Markdown</h3>
-<ol class="posts-list" id="Markdown">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2019-12-11</span>
-<a class="posts-list-name" href="http://localhost:4000/2019/12/11/markdown-introduction/">一份简明的 Markdown 笔记与教程</a>
-</li>
-
-</ol>
-
-<h3>Network</h3>
-<ol class="posts-list" id="Network">
-
-<li class="posts-list-item">
-<span class="posts-list-meta">2020-03-11</span>
-<a class="posts-list-name" href="http://localhost:4000/2020/03/11/strongswan/">strongswan的安装和使用-Host-Host场景</a>
-</li>
-
-</ol>
-
-</section>
-<!-- /section.content -->
-
-            </article>
-            <div class="share">
-                <div class="share-component"></div>
-            </div>
-            <div class="comment">
-                
-
-            </div>
-        </div>
-        <div class="column one-fourth">
-            
+    </div>
+  </div>
+  <div class="column one-fourth">
+    
 <h3>Search</h3>
 <div id="site_search">
     <input type="text" id="search_box" placeholder="Search">
@@ -182,48 +200,22 @@ SimpleJekyllSearch({
 })
 </script>
 
-            
+    
 
-            
-<h3>Blog Categories</h3>
-<div id="blog-categories">
-  <ul class="list-group">
     
-    
-    <li class="list-group-item">
-    <a href="#Crypto">Crypto</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Language">Language</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Markdown">Markdown</a>
-    <span class="badge">1</span>
-    </li>
-    
-    <li class="list-group-item">
-    <a href="#Network">Network</a>
-    <span class="badge">1</span>
-    </li>
-    
-  </ul>
+<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
+<div id="post-directory-module" class="mobile-hidden">
+  <section class="post-directory">
+  <!-- Links that trigger the jumping -->
+  <!-- Added by javascript below -->
+  <dl></dl>
+  </section>
 </div>
 
-<script type="text/javascript">
+<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
 
-  $(document).ready(function(){
-    $("#blog-categories li").css('text-transform','capitalize')
-  });
-
-</script>
-
-
-        </div>
-    </div>
+  </div>
+</div>
 </section>
 <!-- /section.content -->
 
