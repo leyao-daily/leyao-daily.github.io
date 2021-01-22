@@ -5,28 +5,28 @@
   
     {
       "title"    : "页面没有找到",
-      "url"      : "http://0.0.0.0:4000/404.html"
+      "url"      : "http://localhost:4000/404.html"
     } ,
   
   
   
     {
       "title"    : "About",
-      "url"      : "http://0.0.0.0:4000/about/"
+      "url"      : "http://localhost:4000/about/"
     } ,
   
   
   
     {
       "title"    : "归档",
-      "url"      : "http://0.0.0.0:4000/archives/"
+      "url"      : "http://localhost:4000/archives/"
     } ,
   
   
   
     {
       "title"    : "Categories",
-      "url"      : "http://0.0.0.0:4000/categories/"
+      "url"      : "http://localhost:4000/categories/"
     } ,
   
   
@@ -35,14 +35,14 @@
   
     {
       "title"    : "Links",
-      "url"      : "http://0.0.0.0:4000/links/"
+      "url"      : "http://localhost:4000/links/"
     } ,
   
   
   
     {
       "title"    : "Open Source Projects",
-      "url"      : "http://0.0.0.0:4000/open-source/"
+      "url"      : "http://localhost:4000/open-source/"
     } ,
   
   
@@ -51,7 +51,7 @@
   
     {
       "title"    : "Wiki",
-      "url"      : "http://0.0.0.0:4000/wiki/"
+      "url"      : "http://localhost:4000/wiki/"
     } ,
   
   
@@ -69,35 +69,35 @@
       "title"    : "一份简明的 Markdown 笔记与教程",
       "category" : "Markdown",
       
-      "url"      : "http://0.0.0.0:4000/2019/12/11/markdown-introduction/"
+      "url"      : "http://localhost:4000/2019/12/11/markdown-introduction/"
     } ,
   
     {
       "title"    : "strongswan的安装和使用-Host-Host场景",
       "category" : "Network",
       
-      "url"      : "http://0.0.0.0:4000/2020/03/11/strongswan/"
+      "url"      : "http://localhost:4000/2020/03/11/strongswan/"
     } ,
   
     {
       "title"    : "Openssl + QAT Engine 在VF上的安装和使用",
       "category" : "Crypto",
       
-      "url"      : "http://0.0.0.0:4000/2020/03/12/openssl-qat/"
+      "url"      : "http://localhost:4000/2020/03/12/openssl-qat/"
     } ,
   
     {
       "title"    : "Rust语言特性总结",
       "category" : "Language",
       
-      "url"      : "http://0.0.0.0:4000/2020/04/26/Rust-Features/"
+      "url"      : "http://localhost:4000/2020/04/26/Rust-Features/"
     } ,
   
     {
       "title"    : "HyperScan brief intro and deployment",
       "category" : "SIMD",
       
-      "url"      : "http://0.0.0.0:4000/2021/01/20/hyperscan-introduction/"
+      "url"      : "http://localhost:4000/2021/01/20/hyperscan-introduction/"
     } 
   
 ]
