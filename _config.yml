@@ -5,9 +5,9 @@ baseurl:
 url: "https://leyao-daily.github.io"
 date_format: "ordinal"
 title: Le's Zone
-subtitle: "积累 成长"
+subtitle: "今天的风儿甚是喧嚣"
 description: "姚乐的个人博客"
-keywords: 悦己, Le Yao, Yao Le, Le's Zone
+keywords: 悦, Le Yao, Yao Le, Le's Zone
 timezone: Asia/Shanghai
 encoding: "utf-8"
 side_bar_repo_limit: 5

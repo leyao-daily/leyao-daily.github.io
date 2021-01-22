@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>strongswan的安装和使用-Host-Host场景 &mdash; Le's Zone</title>
+    <title>HyperScan brief intro and deployment &mdash; Le's Zone</title>
     <link rel="stylesheet" href="https://leyao-daily.github.io/assets/vendor/primer-css/css/primer.css">
     <link rel="stylesheet" href="https://leyao-daily.github.io/assets/vendor/primer-markdown/dist/user-content.min.css">
     <link rel="stylesheet" href="https://leyao-daily.github.io/assets/vendor/octicons/octicons/octicons.css">
@@ -21,28 +21,28 @@
     
 
     
-    <link rel="canonical" href="https://leyao-daily.github.io/2020/03/11/strongswan/">
+    <link rel="canonical" href="https://leyao-daily.github.io/2021/01/20/hyperscan-introduction/">
     <link rel="alternate" type="application/atom+xml" title="Le's Zone" href="https://leyao-daily.github.io/feed.xml">
     <link rel="shortcut icon" href="https://leyao-daily.github.io/favicon.ico">
     
-    <meta property="og:title" content="strongswan的安装和使用-Host-Host场景">
+    <meta property="og:title" content="HyperScan brief intro and deployment">
       
-    <meta name="keywords" content="network, openssl, strongswan, ipsec, vpn">
-    <meta name="og:keywords" content="network, openssl, strongswan, ipsec, vpn">
+    <meta name="keywords" content="Intel, C++, Regex-Matching, SIMD, Guide">
+    <meta name="og:keywords" content="Intel, C++, Regex-Matching, SIMD, Guide">
       
-    <meta name="description" content="strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。">
-    <meta name="og:description" content="strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。">
+    <meta name="description" content="HyperScan">
+    <meta name="og:description" content="HyperScan">
       
     
     
         
     
-    <meta property="og:url" content="https://leyao-daily.github.io/2020/03/11/strongswan/">
+    <meta property="og:url" content="https://leyao-daily.github.io/2021/01/20/hyperscan-introduction/">
     <meta property="og:site_name" content="Le's Zone">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="zh_CN" />
     
-    <meta property="article:published_time" content="2020-03-11">
+    <meta property="article:published_time" content="2021-01-20">
     
     <script src="https://leyao-daily.github.io/assets/vendor/jquery/dist/jquery.min.js"></script>
     <script src="https://leyao-daily.github.io/assets/js/jquery-ui.js"></script>
@@ -87,23 +87,23 @@
     </header>
     <!-- / header -->
 
-    <section class="collection-head small geopattern" data-pattern-id="strongswan的安装和使">
+    <section class="collection-head small geopattern" data-pattern-id="HyperScan brief">
 <div class="container">
   <div class="columns">
     <div class="column three-fourths">
       <div class="collection-title">
-        <h1 class="collection-header">strongswan的安装和使用-Host-Host场景</h1>
+        <h1 class="collection-header">HyperScan brief intro and deployment</h1>
         <div class="collection-info">
           
           <span class="meta-info">
-            <span class="octicon octicon-calendar"></span> 2020/03/11
+            <span class="octicon octicon-calendar"></span> 2021/01/20
 	    <span id="busuanzi_container_page_pv"> | 访问量：<span id="busuanzi_value_page_pv"></span> 次</span>
           </span>
           
           
           <span class="meta-info">
             <span class="octicon octicon-file-directory"></span>
-            <a href="https://leyao-daily.github.io/categories/#Network" title="Network">Network</a>
+            <a href="https://leyao-daily.github.io/categories/#SIMD" title="SIMD">SIMD</a>
           </span>
           
         </div>
@@ -117,56 +117,153 @@
 <div class="columns">
   <div class="column three-fourths" >
     <article class="article-content markdown-body">
-    <p>strongSwan是一个Linux平台下或者基于UNIX的操作系统下，支持IKEv1/IKEv2密钥的开源的基于IPsec的VPN解决方案。</p>
+    <h1 id="hyperscan">HyperScan</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>HyperScan is a software regular expression matching engine designed with high performance and flexibility in mind. It is implemented as a library that exposes a straightforward C API.</p>
+
+<p>HyperScan is composed of two components:</p>
+
+<h3 id="compilation">Compilation</h3>
+
+<p>These functions take a group of regular expressions, along with identifiers and option flags, and compile them into an immutable database that can be used by the HyperScan scanning API. This compilation process performs considerable analysis and optimization work in order to build a database that will match the given expressions efficiently.</p>
+
+<p>Compiled databases can be serialized and relocated, so that they can be stored to disk or moved between hosts. They can also be targeted to particular platform features (the use of Intel® Advanced Vector Extensions (Intel® AVX2/AVX512) instructions).</p>
+
+<h3 id="scanning">Scanning</h3>
+
+<p>Once a HyperScan database has been created, it can be used to scan data in memory. HyperScan provides several scanning modes, depending on whether the data to be scanned is available as a single contiguous block, whether it is distributed amongst several blocks in memory at the same time, or whether it is to be scanned as a sequence of blocks in a stream.</p>
+
+<p>Matches are delivered to the application via a user-supplied callback function that is called synchronously for each match.</p>
+
+<h2 id="dependences">Dependences</h2>
+
+<h3 id="hardware">Hardware</h3>
+
+<p>HyperScan will run on x86 processors in 64-bit (Intel® 64 Architecture) and 32-bit (IA-32 Architecture) modes.</p>
+
+<p>HyperScan is a high performance software library that takes advantage of recent Intel architecture advances. At a minimum, support for Supplemental Streaming SIMD Extensions 3 (SSSE3) is required, which should be available on any modern x86 processor.</p>
+
+<p>Additionally, HyperScan can make use of:</p>
+
+<blockquote>
+  <ul>
+    <li>Intel Streaming SIMD Extensions 4.2 (SSE4.2)</li>
+    <li>the POPCNT instruction</li>
+    <li>Bit Manipulation Instructions (BMI, BMI2)</li>
+    <li>Intel Advanced Vector Extensions 2 (Intel AVX2)</li>
+  </ul>
+</blockquote>
+
+<h3 id="software">Software</h3>
+
+<p>I am working on a ubuntu-18.04 server, and we need pre-install some dependency lib. I execute the following installation in root mode:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Firstly we should install libpcre, and the required version&gt;=8.44</span>
+<span class="c">#Install the pre-dependency lib</span>
+apt update
+apt <span class="nb">install </span>build-essential cmake
+apt <span class="nb">install </span>checkinstall automake libbz2-1.0 libbz2-dev libbz2-ocaml libbz2-ocaml-dev
+apt <span class="nb">install </span>libreadline-dev
+
+<span class="c">#Download the source from https://ftp.pcre.org/pub/pcre/, we choose 8.44 version here</span>
+wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
+<span class="nb">tar </span>zxvf pcre-8.44.tar.gz
+<span class="nb">cd </span>pcre-8.44
+
+<span class="c">#Configure and complie the so, and install pcre lib</span>
+./configure <span class="nt">--prefix</span><span class="o">=</span>/usr <span class="se">\</span>
+  <span class="nt">--docdir</span><span class="o">=</span>/usr/share/doc/pcre-8.44 <span class="se">\</span>
+  <span class="nt">--enable-utf</span> <span class="se">\</span>
+  <span class="nt">--enable-unicode-properties</span> <span class="se">\</span>
+  <span class="nt">--enable-pcre16</span> <span class="se">\</span>
+  <span class="nt">--enable-pcre32</span> <span class="se">\</span>
+  <span class="nt">--enable-pcregrep-libz</span> <span class="se">\</span>
+  <span class="nt">--enable-pcregrep-libbz2</span> <span class="se">\</span>
+  <span class="nt">--enable-pcretest-libreadline</span> <span class="se">\</span>
+  <span class="nt">--disable-static</span>
+make
+make check
+make <span class="nb">install
+mv</span> <span class="nt">-v</span> /usr/lib/libpcre.so.<span class="k">*</span> /lib 
+<span class="nb">ln</span> <span class="nt">-sfv</span> ../../lib/<span class="si">$(</span><span class="nb">readlink</span> /usr/lib/libpcre.so<span class="si">)</span> /usr/lib/libpcre.so
+
+<span class="c">#To have a full-featured HyperScan, we need pre-install the following libs</span>
+apt update
+apt <span class="nb">install</span> <span class="nt">-y</span> libboost-all-dev ragel libpcap-dev doxygen sphinx-common libsqlite3-dev
+</code></pre></div></div>
+
+<h2 id="quick-start">Quick Start</h2>
 
 <ul>
-  <li><a href="#编译安装">编译安装</a></li>
-  <li><a href="#场景搭建">场景搭建</a>
-    <ul>
-      <li><a href="#IPSec">IPSec</a></li>
-      <li><a href="#Swanctl">Swanctl</a></li>
-    </ul>
+  <li>
+    <p>Clone the source code</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/intel/HyperScan.git
+</code></pre></div>    </div>
   </li>
-  <li><a href="#调用测试">调用测试</a>
-    <ul>
-      <li><a href="#命令行调用">命令行调用</a></li>
-      <li><a href="#系统调用">系统调用</a></li>
-    </ul>
+  <li>
+    <p>Configure the HyperScan features</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>HyperScan
+<span class="nb">mkdir </span>build
+<span class="nb">cd </span>build
+<span class="c">#My server support the Intel AVX512 SIMD, but it is disabled defaultly</span>
+cmake <span class="nt">-DBUILD_AVX512</span><span class="o">=</span>on ..
+</code></pre></div>    </div>
   </li>
-  <li><a href="#问题">问题</a></li>
+  <li>
+    <p>Build and install HyperScan</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cmake <span class="nt">--build</span> <span class="nb">.</span>
+<span class="c">#Of course you can use makefiles in parallel by `make -j`</span>
+make <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Check the installation with unit tests</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/unit-HyperScan
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Testing</p>
+
+    <p>After building, we can see the auto-compiled binary program in <code class="language-plaintext highlighter-rouge">hyperscan/build/bin</code>, the programs <code class="language-plaintext highlighter-rouge">simplegrep</code>, <code class="language-plaintext highlighter-rouge">pcapscan</code> and <code class="language-plaintext highlighter-rouge">patbench</code> are the target file for the source code in <code class="language-plaintext highlighter-rouge">hyperscan/examples</code>, and you can run them to do some testing.</p>
+
+    <p>If you want to build the examples separately, there may be a brief guide in each source code, but for <code class="language-plaintext highlighter-rouge">simplegrep.c</code>, we need do following changes:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>diff <span class="nt">--git</span> a/examples/simplegrep.c b/examples/simplegrep.c
+index d6bd4b3..2b5fe94 100644
+<span class="nt">---</span> a/examples/simplegrep.c
++++ b/examples/simplegrep.c
+@@ <span class="nt">-116</span>,7 +116,7 @@ static char <span class="k">*</span>readInputData<span class="o">(</span>const char <span class="k">*</span>inputFN, unsigned int <span class="k">*</span>length<span class="o">)</span> <span class="o">{</span>
+         <span class="k">return </span>NULL<span class="p">;</span>
+     <span class="o">}</span>
+  
+-    char <span class="k">*</span>inputData <span class="o">=</span> malloc<span class="o">(</span>dataLen<span class="o">)</span><span class="p">;</span>
++    char <span class="k">*</span>inputData <span class="o">=</span> <span class="o">(</span>char <span class="k">*</span><span class="o">)</span>malloc<span class="o">(</span>dataLen<span class="o">)</span><span class="p">;</span>
+     <span class="k">if</span> <span class="o">(!</span>inputData<span class="o">)</span> <span class="o">{</span>
+         fprintf<span class="o">(</span>stderr, <span class="s2">"ERROR: unable to malloc %ld bytes</span><span class="se">\n</span><span class="s2">"</span>, dataLen<span class="o">)</span><span class="p">;</span>
+         fclose<span class="o">(</span>f<span class="o">)</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>and compile with:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ <span class="nt">-o</span> simplegrep simplegrep.c <span class="si">$(</span>pkg-config <span class="nt">--cflags</span> <span class="nt">--libs</span> libhs<span class="si">)</span>
+</code></pre></div>    </div>
+
+    <p>then you can test it, eg:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@ubuntu:~/hyperscan/examples# ./simplegrep malloc simplegrep.c
+Scanning 8041 bytes with Hyperscan
+Match <span class="k">for </span>pattern <span class="s2">"malloc"</span> at offset 4471
+Match <span class="k">for </span>pattern <span class="s2">"malloc"</span> at offset 4552
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<h2 id="编译安装">编译安装</h2>
-<p>下载并解压strongswan-5.8.2</p>
-<blockquote>
-  <p>wget http://download.strongswan.org/strongswan-5.8.2.tar.bz2<br />
-tar xjvf strongswan-5.8.2.tar.bz2<br />
-cd strongswan-5.8.2</p>
-</blockquote>
-
-<p>根据自己的应用场景配置strongswan安装程序，本文档建立基于Openssl + QAT的Ipsec，所以开启openssl支持</p>
-<blockquote>
-  <p>./configure --prefix=/usr --sysconfdir=/etc --enable-test-vectors --disable-gmp --enable-openssl</p>
-  <blockquote>
-    <p>其他配置详情可以通过./configure -h浏览</p>
-  </blockquote>
-
-  <p>make<br />
-sudo make install</p>
-</blockquote>
-
-<p>注意，安装前请先安装好Openssl环境，QAT相关配置是可选的，具体步骤可以看<a href="https://leyao-daily.github.io/2020/03/12/openssl-qat/">Openssl + QAT Engine 在VF上的安装和使用</a></p>
-
-<p>如果使用其他配置，请根据编译提示安装所需的软件包即可。</p>
-
-<h2 id="场景搭建">场景搭建</h2>
-<p>本说明中采用最简单的场景进行搭建，建立Host与Host对接的场景。
-<img src="https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/strongswan/h2h.png" alt="host-to-host 场景" /></p>
-
-<p>采用Strongswan搭建IPSec可以通过两种方式，旧版的IPSec工具和新版Swanctl工具，两种搭建方法都是基于Strongswan的，但配置过程完全不同。
-###IpSec</p>
-
-<p>###Swanctl</p>
 
     </article>
     <div class="share">
@@ -183,7 +280,7 @@ sudo make install</p>
         <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
         <script>
         var gitalk = new Gitalk({
-            id: '/2020/03/11/strongswan/',
+            id: '/2021/01/20/hyperscan-introduction/',
             clientID: 'c41651ae180cca6590c9',
             clientSecret: 'fe8100b7450c2260d7e5af42d79d69383ea64987',
             repo: 'blog-comments',
