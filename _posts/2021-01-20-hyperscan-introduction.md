@@ -149,4 +149,62 @@ apt install -y libboost-all-dev ragel libpcap-dev doxygen sphinx-common libsqlit
   Match for pattern "malloc" at offset 4552
   ```
 
-  
+  ## Constructs support from PCRE Library
+
+  ### Supported Constructs
+
+  The following regex constructs are supported by Hyperscan:
+
+  - Literal characters and strings, with all libpcre quoting and character escapes.
+
+  - Character classes such as `.` (dot), `[abc]`, and `[^abc]`, as well as the predefined character classes `\s`, `\d`, `\w`, `\v`, and `\h` and their negated counterparts (`\S`, `\D`, `\W`, `\V`, and `\H`).
+
+  - The POSIX named character classes `[[:xxx:]]` and negated named character classes `[[:^xxx:]]`.
+
+  - Unicode character properties, such as `\p{L}`, `\P{Sc}`, `\p{Greek}`.
+
+  - Quantifiers:
+
+    - Quantifiers such as `?`, `*` and `+` are supported when applied to arbitrary supported sub-expressions.
+    - Bounded repeat qualifiers such as `{n}`, `{m,n}`, `{n,}` are supported with limitations.
+      - For arbitrary repeated sub-patterns: *n* and *m* should be either small or infinite, e.g. `(a|b){4}`, `(ab?c?d){4,10}` or `(ab(cd)*){6,}`.
+      - For single-character width sub-patterns such as `[^\a]` or `.` or `x`, nearly all repeat counts are supported, except where repeats are extremely large (maximum bound greater than 32767). Stream states may be very large for large bounded repeats, e.g. `a.{2000}b`. Note: such sub-patterns may be considerably cheaper if at the beginning or end of patterns and especially if the [`HS_FLAG_SINGLEMATCH`](http://intel.github.io/hyperscan/dev-reference/api_constants.html#c.HS_FLAG_SINGLEMATCH) flag is on for that pattern.
+    - Lazy modifiers (`?` appended to another quantifier, e.g. `\w+?`) are supported but ignored (as Hyperscan reports all matches).
+
+  - Parenthesization, including the named and unnamed capturing and non-capturing forms. However, capturing is ignored.
+
+  - Alternation with the `|` symbol, as in `foo|bar`.
+
+  - The anchors `^`, `$`, `\A`, `\Z` and `\z`.
+
+  - Option modifiers:
+
+    These allow behaviour to be switched on (with `(?<option>)`) and off (with `(?-<option>)`) for a sub-pattern. The supported options are:
+
+    > - `i`: Case-insensitive matching, as per [`HS_FLAG_CASELESS`](http://intel.github.io/hyperscan/dev-reference/api_constants.html#c.HS_FLAG_CASELESS).
+    > - `m`: Multi-line matching, as per [`HS_FLAG_MULTILINE`](http://intel.github.io/hyperscan/dev-reference/api_constants.html#c.HS_FLAG_MULTILINE).
+    > - `s`: Interpret `.` as “any character”, as per [`HS_FLAG_DOTALL`](http://intel.github.io/hyperscan/dev-reference/api_constants.html#c.HS_FLAG_DOTALL).
+    > - `x`: Extended syntax, which will ignore most whitespace in the pattern for compatibility with libpcre’s `PCRE_EXTENDED` option.
+
+    For example, the expression `foo(?i)bar(?-i)baz` will switch on case-insensitive matching *only* for the `bar` portion of the match.
+
+  - The `\b` and `\B` zero-width assertions (word boundary and ‘not word boundary’, respectively).
+
+  - Comments in `(?# comment)` syntax.
+
+  - The `(*UTF8)` and `(*UCP)` control verbs at the beginning of a pattern, used to enable UTF-8 and UCP mode.
+
+  ### Unsupported Constructs
+
+  The following regex constructs are not supported by Hyperscan:
+
+  - Backreferences and capturing sub-expressions.
+  - Arbitrary zero-width assertions.
+  - Subroutine references and recursive patterns.
+  - Conditional patterns.
+  - Backtracking control verbs.
+  - The `\C` “single-byte” directive (which breaks UTF-8 sequences).
+  - The `\R` newline match.
+  - The `\K` start of match reset directive.
+  - Callouts and embedded code.
+  - Atomic grouping and possessive quantifiers.
