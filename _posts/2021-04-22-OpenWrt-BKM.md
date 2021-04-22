@@ -3,12 +3,27 @@ layout: post
 title: Build Your Custom OpenWrt Image
 categories: OpenWrt
 description: A step by step guide to build your own OpenWrt application and integrate it with OpenWrt build system.
-keywords: OpenWrt, C/C++, Docker, Sdewan, Guide 
+excerpt_separator: <!-- excerpt-end -->
+keywords: OpenWrt, C/C++, Docker, Sdewan, Guide
 ---
 
-# Build Your Custom OpenWrt Image
-
 This guides to build your OpenWrt Image integrated with custom application step by step.
+<!-- excerpt-end -->
+---
+
+* [Setup OpenWrt](#setup-openwrt)
+    * [Pre-requisites](#pre-requisites)
+    * [Build OpenWrt form source code](#build-openwrt-form-source-code)
+* [Create your own application](#create-your-own-application)
+    * [Locate your application](#locate-your-application)
+	* [Compile and test](#compile-and-test)
+* [Generate the application package](#generate-the-application-package)
+    * [Create package and configure it](#create-package-and-configure-it)
+	* [Integrate the package to build system](#integrate-the-package-to-build-system)
+	* [Updating and installing feeds](#updating-and-installing-feeds)
+* [Build image and test](#build-image-and-test)
+    * [Build image with custom application](build-image-with-custom-application)
+	* [Import image and test](#import-image-and-test)
 
 ## Setup OpenWrt
 
@@ -241,7 +256,9 @@ pwd
 ./scripts/feeds install -a -p myapps
 ```
 
-## Build image with custom application
+## Build image and test
+
+### Build image with custom application
 
 Re-configure your `openwrt` build system
 
@@ -259,5 +276,40 @@ The changes will be stored to `.config`, then start to build the image
 make -j 70
 # To locate the error, you can run `make -j1 V=sc`
 ```
+### Import image and test
 
- 
+After finishing the image build, we can find the `rootfs` of the image in the `./bin` directory
+
+```shell
+pwd
+# /home/icn/openwrt
+# Dive into the target to find the `rootfs` image
+cd ./bin/targets/x86/64
+ls openwrt-x86-64-generic-rootfs.tar.gz
+```
+
+Import the image to docker as a docker container
+
+```shell
+sudo docker import openwrt-x86-64-generic-rootfs.tar.gz myapps:hellosdewan
+```
+
+Then the image is imported into docker as `myapps` and tag is `hellosdewan`. We can run the docker image and test the application `hellosdewan`
+
+```shell
+sudo docker run -ti myapps:hellosdewan hellosdewan
+# Hello, sdewan!
+```
+
+Note you can build the `opkg` package solely
+
+```shell
+pwd
+# /home/icn/openwrt
+make package/hellosdewan/compile
+# The `hellosdewan_1.0-1_x86_64.ipk` will be on `./bin/packages/x86_64/myapps`
+# And you can use `opkg` to directly install it
+opkg install <path-to-package>/hellosdewan_1.0-1_x86_64.ipk
+# Or you can remove the installation
+opkg remove hellosdewan
+```
