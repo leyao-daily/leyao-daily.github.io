@@ -8,9 +8,8 @@ keywords: OpenWrt, C/C++, Docker, Sdewan, Guide
 ---
 
 This guides to build your OpenWrt Image integrated with custom application step by step.
-<!-- excerpt-end -->
----
 
+<!-- excerpt-end -->
 * [Setup OpenWrt](#setup-openwrt)
     * [Pre-requisites](#pre-requisites)
     * [Build OpenWrt form source code](#build-openwrt-form-source-code)
