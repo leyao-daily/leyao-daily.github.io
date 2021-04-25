@@ -94,7 +94,19 @@ You need leave the `sudo` privileged mode to get better cross-compile by `ctrl +
 
    - “Exit” ⇒ “Yes”
 
-5. Build image
+5. Tool Chain
+
+   ```shell
+   make toolchain/install
+   ```
+
+   The target-independent tools and the toolchain are deployed to the `staging_dir/host/` and `staging_dir/toolchain/` directories. This applies to the executables built in the above section as well the pre-built executables available in the SDK. We can adjust the `PATH` variable:
+
+   ```shell
+   export PATH=/home/icn/openwrt/staging_dir/host/bin:$PATH
+   ```
+
+6. Build image
 
    ```shell
    make
