@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Dive into WebAssembly - Overview and History
+title: Dive into WebAssembly - Introduction
 categories: Webassembly
 description: TBD
 keywords: WebAssembly, WASM, Web, JavaScript
@@ -58,3 +58,11 @@ To skip as many of the time-consuming steps involved in JavaScript execution, in
 ​	![Convoluted Path](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/webassembly/asm.jpg)
 
 However, `asm.js` worked within the constraints of JavaScript itself. (delivered as plain text, parser into AST). But its fantastic success is basically a proof of concept for WebAssembly and many design decisions are adopted by WebAssembly.
+
+---
+
+## WebAssembly Introduction
+
+*WebAssembly or wasm is a new portable, size- and load-time-efficient format suitable for compilation to the web.”*
+
+It was designed for performance; designed to be compact; designed as a compilation target (C++, C, Rust, C#, Go and many more), and designed for the web.
