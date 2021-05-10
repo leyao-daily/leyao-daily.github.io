@@ -4,7 +4,7 @@ title: Build Your Custom OpenWrt Image
 categories: OpenWrt
 description: A step by step guide to build your own OpenWrt application and integrate it with OpenWrt build system.
 excerpt_separator: <!-- excerpt-end -->
-keywords: OpenWrt, C/C++, Docker, Sdewan, Guide
+keywords: OpenWrt, C/C++, Docker, Sdewan, Guide, ICN, CNF, VNF, NFV
 ---
 
 This guides to build your OpenWrt Image integrated with custom application step by step.
