@@ -5,7 +5,7 @@ categories: Webassembly
 description: TBD
 keywords: WebAssembly, WASM, Web, JavaScript
 ---
-WebAssembly
+WebAssembly - Overview and History
 
 * [Overview](#overview)
 * [World Wide Web](#word-wide-web)
