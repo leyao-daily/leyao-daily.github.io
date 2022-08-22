@@ -10,6 +10,7 @@ Integrate Oauth2  check into `strongswan` using `vpn-webauth`
 * [What is `vpn-webauth`](#what-is-vpn-webauth)
 * [Guide](#step-by-step-guide-to-utilize-this-app)
 * [Demo](#demo)
+* [Notification](#notification)
 
 ## what is `vpn-webauth`
 
@@ -149,3 +150,30 @@ The script will gather and send the following JSON data to `/vpn/check` and then
 ### Topology
 
 ![strongswan-vpn-webauth](https://raw.githubusercontent.com/leyao-daily/leyao-daily.github.io/master/images/posts/sase/strongswan-vpn-webauth.png)
+
+
+## Notification
+
+### Configuration
+Firstly, we should configure the server side `vpn-webauth` to a https server to enable notification because modern browser always ask a https connection to trust the sites.
+
+```bash
+# To enable notification, we should configure vpn-webauth as a https server 
+# Here, we create self-signed key and use the custom SSLMODE for vpn-webauth, you also can use auto mode.
+export SSLCUSTOMKEYPATH="/ssl/key.pem"
+export SSLCUSTOMCERTPATH="/ssl/cert.pem"
+export SSLMODE=custom
+# export SSLMODE=auto
+
+# Configure the redirect url to https
+export REDIRECTDOMAIN="https:://<vpn-webauth-service>"
+
+# Enable the notifications
+export ENABLENOTIFICATIONS=true
+```
+
+### Browser setup
+
+To enable notification, we should allow the permission to the `vpn-webauth` site, when we firstly login to the `vpn-webauth`, it will ask for the notification permission, and we should allow it. Or you can manually setup the notification allowed in browser. (eg. Chrome -> Settings -> Privacy and security -> Site settings -> Permissions -> Notifications)
+
+---
