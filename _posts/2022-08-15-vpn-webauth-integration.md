@@ -154,6 +154,8 @@ The script will gather and send the following JSON data to `/vpn/check` and then
 
 ## Notification
 
+As the topology diagram shows, the green line explain the flow of the notification.
+
 ### Configuration
 Firstly, we should configure the server side `vpn-webauth` to a https server to enable notification because modern browser always ask a https connection to trust the sites.
 
@@ -170,10 +172,15 @@ export REDIRECTDOMAIN="https:://<vpn-webauth-service>"
 
 # Enable the notifications
 export ENABLENOTIFICATIONS=true
+
+# Currently Google Chrome, Firefox and Edge support notifications and automated VPN session renewal without meeding to keep this app opened. Safari requires the user to keep a tab open.
 ```
 
 ### Browser setup
 
 To enable notification, we should allow the permission to the `vpn-webauth` site, when we firstly login to the `vpn-webauth`, it will ask for the notification permission, and we should allow it. Or you can manually setup the notification allowed in browser. (eg. Chrome -> Settings -> Privacy and security -> Site settings -> Permissions -> Notifications)
+
+And when we login into the `vpn-webauth`, the session will be verified by two pre-configuration in `vpn-webauth`, the WEBSESSIONVALIDITY and VPNSESSIONVALIDITY, after registering or signing in, users will be shown a message inviting them to enable notifications for the app. If they accept, when they attempt to connect to the VPN without a valid web session, they will receive a notification letting them know that they need to sign in for the VPN connection to be authorized. Additionally, if their VPN session is expired (VPNSESSIONVALIDITY) but they still have a valid web session (WEBSESSIONVALIDITY), their next attempt to connect to the VPN will try to transparently ask the browser used to sign in to prove that it still holds a valid session and has the same source IP as the VPN connection attempt. If so, the VPN connection will be automatically allowed and a new VPN "session" created without any intervention. (The browser must be running even without this application opened).
+
 
 ---
