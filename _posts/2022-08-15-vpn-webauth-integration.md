@@ -182,5 +182,9 @@ To enable notification, we should allow the permission to the `vpn-webauth` site
 
 And when we login into the `vpn-webauth`, the session will be verified by two pre-configuration in `vpn-webauth`, the WEBSESSIONVALIDITY and VPNSESSIONVALIDITY, after registering or signing in, users will be shown a message inviting them to enable notifications for the app. If they accept, when they attempt to connect to the VPN without a valid web session, they will receive a notification letting them know that they need to sign in for the VPN connection to be authorized. Additionally, if their VPN session is expired (VPNSESSIONVALIDITY) but they still have a valid web session (WEBSESSIONVALIDITY), their next attempt to connect to the VPN will try to transparently ask the browser used to sign in to prove that it still holds a valid session and has the same source IP as the VPN connection attempt. If so, the VPN connection will be automatically allowed and a new VPN "session" created without any intervention. (The browser must be running even without this application opened).
 
+Users can trigger the notification by send request to `vpn-webauth` when is VPN session is expired (We remove the source IP check here by modifying the source code). 
+```bash
+curl -f -d "{ \"Identity\": \<account_id>\  }" https://<vpn-webauth>/vpn/check`
+```
 
 ---
