@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Rust Daily Learning - Day 1
+title: Rust Daily Learning - Day 1 - Installation
 categories: Rust
 description: A brief introduction to Rust and getting started with the "Hello, World!" program
 keywords: Rust, Program, Daily, Notes
