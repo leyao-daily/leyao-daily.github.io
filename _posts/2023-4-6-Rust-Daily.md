@@ -5,7 +5,7 @@ categories: Rust
 description: Learn about macros in Rust
 keywords: Rust, Programming, Daily Learning, Macros, macro_rules, Procedural Macros
 ---
-# Rust Daily Learning - Day 12
+# Rust Daily Learning - Day 11
 
 - [Overview](#overview)
 - [Declarative Macros](#declarative-macros)
@@ -13,7 +13,7 @@ keywords: Rust, Programming, Daily Learning, Macros, macro_rules, Procedural Mac
 
 ## Overview
 
-Welcome to Day 12 of the Rust daily learning series! Today, we'll explore macros in Rust, a powerful feature that enables code generation and metaprogramming. We'll look at the two types of macros in Rust: declarative macros and procedural macros.
+Welcome to Day 11 of the Rust daily learning series! Today, we'll explore macros in Rust, a powerful feature that enables code generation and metaprogramming. We'll look at the two types of macros in Rust: declarative macros and procedural macros.
 
 ## Declarative Macros
 
