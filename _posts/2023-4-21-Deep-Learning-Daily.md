@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Day 1 - Introduction to Deep Learning and Neural Networks
+title: Deep Learning - Day 1 - Introduction to Deep Learning and Neural Networks
 categories: Deep Learning
 description: An introduction to the concepts of deep learning and neural networks, and their applications in various domains.
 keywords: Deep Learning, Neural Networks, Artificial Intelligence, Machine Learning, Python
