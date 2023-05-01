@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 5 - Building a Basic Neural Network with TensorFlow and Keras
-categories: Deep Learning
+categories: ['Deep Learning']
 description: A step-by-step guide to building, training, and evaluating a basic neural network using TensorFlow and Keras.
 keywords: Deep Learning, Python, TensorFlow, Keras, Neural Network
 ---

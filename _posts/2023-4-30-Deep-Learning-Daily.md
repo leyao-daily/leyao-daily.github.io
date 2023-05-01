@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 10 - Hyperparameter Tuning and Grid Search
-categories: Deep Learning
+categories: ['Deep Learning']
 description: A practical guide to hyperparameter tuning and grid search for optimizing neural network performance.
 keywords: Deep Learning, Neural Network, Hyperparameter Tuning, Grid Search, Random Search, Bayesian Optimization, Python
 ---

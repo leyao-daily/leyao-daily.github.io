@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 9 - Regularization Techniques for Neural Networks
-categories: Deep Learning
+categories: ['Deep Learning']
 description: A comprehensive guide to regularization techniques used to prevent overfitting in neural networks.
 keywords: Deep Learning, Neural Network, Regularization, L1, L2, Dropout, Data Augmentation, Early Stopping, Python
 ---

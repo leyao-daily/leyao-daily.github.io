@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 6 - Activation Functions and Layer Types
-categories: Deep Learning
+categories: ['Deep Learning']
 description: An introduction to various activation functions and layer types used in neural networks.
 keywords: Deep Learning, Python, Activation Functions, Layer Types, Neural Network
 ---

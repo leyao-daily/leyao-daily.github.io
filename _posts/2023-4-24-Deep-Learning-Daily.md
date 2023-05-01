@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 4 - Exploring Popular Deep Learning Libraries (TensorFlow, Keras, PyTorch)
-categories: Deep Learning
+categories: ['Deep Learning']
 description: An introduction to popular deep learning libraries TensorFlow, Keras, and PyTorch, highlighting their features, benefits, and use cases.
 keywords: Deep Learning, Python, TensorFlow, Keras, PyTorch, Libraries
 ---

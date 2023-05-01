@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 2 - Setting up the Python Environment for Deep Learning
-categories: Deep Learning
+categories: ['Deep Learning']
 description: A step-by-step guide to setting up your Python environment for deep learning, including installing essential libraries and tools.
 keywords: Deep Learning, Python, Environment Setup, TensorFlow, Keras, PyTorch, Jupyter Notebook
 ---

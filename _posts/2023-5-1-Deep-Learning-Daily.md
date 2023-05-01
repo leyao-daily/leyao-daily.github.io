@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 11 - Convolutional Neural Networks (CNNs)
-categories: Deep Learning
+categories: ['Deep Learning']
 description: An introduction to Convolutional Neural Networks (CNNs), their architecture, and applications in computer vision tasks.
 keywords: Deep Learning, Convolutional Neural Networks, CNN, Image Classification, Object Detection, Computer Vision, Python
 ---

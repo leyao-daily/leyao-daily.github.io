@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 3 - Understanding Data and Preprocessing
-categories: Deep Learning
+categories: ['Deep Learning']
 description: A guide to understanding and preprocessing data for deep learning tasks in Python, including data exploration, normalization, and transformation.
 keywords: Deep Learning, Python, Data Preprocessing, Data Exploration, Data Normalization, Data Transformation
 ---

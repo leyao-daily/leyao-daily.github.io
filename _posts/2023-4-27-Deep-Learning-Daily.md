@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 7 - Loss Functions and Optimization Techniques
-categories: Deep Learning
+categories: ['Deep Learning']
 description: An introduction to loss functions and optimization techniques used in deep learning.
 keywords: Deep Learning, Python, Loss Functions, Optimization Techniques
 ---

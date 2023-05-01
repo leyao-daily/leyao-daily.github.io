@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deep Learning - Day 12 - Recurrent Neural Networks (RNNs) and LSTMs
-categories: Deep Learning
+categories: ['Deep Learning']
 description: An introduction to Recurrent Neural Networks and Long Short-Term Memory networks.
 keywords: RNN, LSTM, Deep Learning, Neural Networks, Sequence Data
 ---
