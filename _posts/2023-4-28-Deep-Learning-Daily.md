@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Deep Learning - Day 8 - Training a Neural Network: Forward and Backward Propagation
-categories: Deep Learning
+title: Deep Learning - Day 8 - Training a Neural Network - Forward and Backward Propagation
+categories: ['Deep Learning']
 description: A comprehensive guide to understanding forward and backward propagation in neural networks.
 keywords: Deep Learning, Neural Network, Forward Propagation, Backward Propagation, Python
 ---
