@@ -7,8 +7,6 @@ keywords: RNN, LSTM, Deep Learning, Neural Networks, Sequence Data
 ---
 # Day 12 - Recurrent Neural Networks (RNNs) and LSTMs
 
-## Table of Contents
-
 - [Introduction to Recurrent Neural Networks (RNNs)](#introduction-to-recurrent-neural-networks-rnns)
 - [Long Short-Term Memory (LSTM)](#long-short-term-memory-lstm)
 - [Applications of RNNs and LSTMs](#applications-of-rnns-and-lstms)

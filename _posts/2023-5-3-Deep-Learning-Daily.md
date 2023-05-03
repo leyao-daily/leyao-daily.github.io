@@ -1,15 +1,13 @@
 ---
 layout: post
 title: Deep Learning - Day 13 - Transfer Learning and Pretrained Models
-categories: DeepLearning
+categories: ['Deep Learning']
 description: An introduction to transfer learning and the utilization of pretrained models in deep learning.
 keywords: Deep Learning, Python, Transfer Learning, Pretrained Models, Neural Networks
 ---
 # Day 13 - Transfer Learning and Pretrained Models
 
 As we continue our deep learning journey, we now delve into the concept of transfer learning and the use of pretrained models. In this post, we will explore how these techniques can significantly improve the performance of our neural networks while reducing training time.
-
-**Table of Contents:**
 
 - [Transfer Learning](#transfer-learning)
 - [Pretrained Models](#pretrained-models)
