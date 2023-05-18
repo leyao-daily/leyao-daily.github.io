@@ -11,7 +11,7 @@ keywords: finance, investment, financial markets, stock market, bond market, com
 
 1. [Introduction](#introduction)
 2. [What are Financial Markets?](#what)
-3. Types of Financial Markets
+3. [Types of Financial Markets](#types)
    - [Stock Markets](#stock)
    - [Bond Markets](#bond)
    - [Commodities Markets](#commodities)
