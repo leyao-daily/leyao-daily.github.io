@@ -14,7 +14,8 @@ keywords: AI, Machine Learning, Supervised Learning, Unsupervised Learning, Rein
 - [Supervised Learning](#supervised-learning)
 - [Unsupervised Learning](#unsupervised-learning)
 - [Reinforcement Learning](#reinforcement-learning)
-- [Summary](#summary)
+- [The Machine Learning Revolution](#the-machine-learning-revolution)
+- [Conclusion](#conclusion)
 
 ## Introduction
 Artificial Intelligence (AI) has always been a field of fascination, capturing the imaginations of scientists, philosophers, and science fiction writers alike. Today, AI has become an integral part of our everyday lives, powering everything from search engines to self-driving cars. In this article, we will delve into the captivating journey of AI from its nascent stages to the current machine learning revolution.
