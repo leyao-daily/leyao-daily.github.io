@@ -2,8 +2,8 @@
 layout: post
 title: Day 13 - Introduction to Vue Router
 categories: ['Vue.js', 'JavaScript', 'Web Development']
-description: On Day 12, we'll review everything we've learned about Vue.js components so far and put our knowledge into practice with hands-on exercises and mini-projects.
-keywords: Vue.js, Components, Review, Practice, Exercises
+description: On Day 13, we'll introduce Vue Router, a powerful routing library for Vue.js, and learn how to set it up, create routes, and link views.
+keywords: Vue.js, Vue Router, Routing, Views
 ---
 # Day 13: Introduction to Vue Router
 
