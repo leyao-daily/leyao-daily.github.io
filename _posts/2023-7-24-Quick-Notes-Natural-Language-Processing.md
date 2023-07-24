@@ -2,7 +2,7 @@
 layout: post
 title: Natural Language Processing (NLP) - Unleashing the Power of Human Language Understanding
 categories: ['Machine Learning', 'Artificial Intelligence', 'Natural Language Processing']
-description:  In this article, we delve into the fascinating world of Natural Language Processing (NLP), exploring how machines understand and process human language, and its transformative applications.
+description: In this article, we delve into the fascinating world of Natural Language Processing (NLP), exploring how machines understand and process human language, and its transformative applications.
 keywords: Natural Language Processing, NLP, Machine Learning, Artificial Intelligence
 ---
 # Natural Language Processing (NLP) - Unleashing the Power of Human Language Understanding

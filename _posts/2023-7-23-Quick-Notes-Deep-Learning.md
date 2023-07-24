@@ -2,7 +2,7 @@
 layout: post
 title: Deep Learning - Unraveling the Power of Neural Networks
 categories: ['Machine Learning', 'Artificial Intelligence', 'Deep Learning']
-description:  In this article, we dive into the fascinating world of Deep Learning, exploring the power of neural networks and their applications in various domains.
+description: In this article, we dive into the fascinating world of Deep Learning, exploring the power of neural networks and their applications in various domains.
 keywords: Deep Learning, Neural Networks, Artificial Intelligence
 ---
 # Deep Learning - Unraveling the Power of Neural Networks
