@@ -9,11 +9,11 @@ keywords: 5G Technology, 5G Networks, 5G Applications, Edge Computing
 
 **Table of Contents**
 
-- [Introduction to 5G Technology](https://chat.openai.com/c/c7a0a630-8e9a-4b18-8be4-0e8d5c706d29#introduction-to-5g-technology)
-- [Evolution of Cellular Networks to 5G](https://chat.openai.com/c/c7a0a630-8e9a-4b18-8be4-0e8d5c706d29#evolution-of-cellular-networks-to-5g)
-- [Key Features and Advantages of 5G](https://chat.openai.com/c/c7a0a630-8e9a-4b18-8be4-0e8d5c706d29#key-features-and-advantages-of-5g)
-- [5G Applications and Use Cases](https://chat.openai.com/c/c7a0a630-8e9a-4b18-8be4-0e8d5c706d29#5g-applications-and-use-cases)
-- [Edge Computing in 5G](https://chat.openai.com/c/c7a0a630-8e9a-4b18-8be4-0e8d5c706d29#edge-computing-in-5g)
+- [Introduction to 5G Technology](#introduction-to-5g-technology)
+- [Evolution of Cellular Networks to 5G](#evolution-of-cellular-networks-to-5g)
+- [Key Features and Advantages of 5G](#key-features-and-advantages-of-5g)
+- [5G Applications and Use Cases](#5g-applications-and-use-cases)
+- [Edge Computing in 5G](#edge-computing-in-5g)
 
 Welcome to the world of 5G Technology, where next-generation connectivity is redefining the way we communicate, connect, and experience the digital world. In this article, we'll dive into the realm of 5G, exploring its networks, applications, and the seamless integration of Edge Computing, unlocking new possibilities for industries and consumers alike.
 
