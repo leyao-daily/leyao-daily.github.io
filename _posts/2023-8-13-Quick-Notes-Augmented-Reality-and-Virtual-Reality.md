@@ -3,7 +3,7 @@ layout: post
 title: Augmented Reality (AR) and Virtual Reality (VR) - Shaping the Future of Interactive Experiences
 categories: ['Augmented Reality', 'Virtual Reality', 'AR Applications', 'VR Applications', 'Mixed Reality', 'AR/VR Content Creation']
 description: In this article, we delve into the immersive realms of Augmented Reality (AR) and Virtual Reality (VR), understanding their applications across various industries, exploring the concept of mixed reality, and uncovering the creative process of AR/VR content creation.
-keywords: Augmented Reality, Virtual Reality, AR Applications, VR Applications, Mixed Reality, AR/VR Content Creation   
+keywords: Augmented Reality, Virtual Reality, AR Applications, VR Applications, Mixed Reality, AR/VR Content Creation
 ---
 # Augmented Reality (AR) and Virtual Reality (VR) - Shaping the Future of Interactive Experiences
 
